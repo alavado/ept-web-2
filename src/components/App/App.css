@@ -1,3 +1,8 @@
 .App {
   font-family: 'Open Sans', sans-serif;
 }
+
+.App__graficos {
+  display: flex;
+  flex-direction: row;
+}
