@@ -1,0 +1,33 @@
+ export const toEulerAngles = q => {
+
+    const [w, x, y, z] = q
+
+    let angles = {
+      roll: 0,
+      pitch: 0,
+      yaw: 0
+    }
+
+    // roll (x-axis rotation)
+    let sinr_cosp = 2 * (w * x + y * z)
+    let cosr_cosp = 1 - 2 * (x * x + y * y)
+    angles.roll = Math.atan2(sinr_cosp, cosr_cosp)
+
+    // pitch (y-axis rotation)
+    let sinp = 2 * (w * y - z * x)
+    if (Math.abs(sinp) >= 1)
+        angles.pitch = Math.sign(Math.PI / 2, sinp) // use 90 degrees if out of range
+    else
+        angles.pitch = Math.asin(sinp)
+
+    // yaw (z-axis rotation)
+    let siny_cosp = 2 * (w * z + x * y)
+    let cosy_cosp = 1 - 2 * (y * y + z * z)
+    angles.yaw = Math.atan2(siny_cosp, cosy_cosp)
+
+    return {
+      roll: angles.roll * 180 / Math.PI,
+      pitch: angles.pitch * 180 / Math.PI,
+      yaw: angles.yaw * 180 / Math.PI
+    }
+  }
