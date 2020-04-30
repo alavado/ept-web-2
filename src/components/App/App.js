@@ -78,87 +78,95 @@ const App = () => {
     }
   }
 
+  const traducirAngulo = a => {
+    switch (a) {
+      case 'roll': return 'x'
+      case 'pitch': return 'y'
+      case 'yaw': return 'z'
+    }
+  }
+
   return (
     <div className="App">
-      <h1>EPT ACHS bkn</h1>
-      <button onClick={e => conectar('compsci.cl:2304/input')}>Conectar</button>
+      <h1>EPT ACHS</h1>
+      <button onClick={e => conectar('compsci.cl:2304/input')}>Conectar con Raspberry Pi</button>
       <div className="App__emg">
         <h1>EMG</h1>
         <div style={{flex:1}}>
-        <Line
-          data={{
-            labels: datos.emg.t.slice(0, 90).reverse(),
-            datasets: [
-              {
-                label: 'emg',
-                data: datos.emg.v.slice(0, 90).reverse().map((x, i, arr) => {
-                  const indiceInicial = Math.max(0, i - 10)
-                  const indiceFinal = Math.min(i + 10, arr.length - 1)
-                  return arr
-                    .slice(indiceInicial, indiceFinal)
-                    .reduce((sum, y) => sum + (y < 550 ? (550 + (550 - y)) : y), 0) / (indiceFinal - indiceInicial)
-                }),
-                pointRadius: 0,
-                fill: false
+          <Line
+            data={{
+              labels: datos.emg.t.slice(0, 90).reverse(),
+              datasets: [
+                {
+                  label: 'emg',
+                  data: datos.emg.v.slice(0, 90).reverse().map((x, i, arr) => {
+                    const indiceInicial = Math.max(0, i - 10)
+                    const indiceFinal = Math.min(i + 10, arr.length - 1)
+                    return arr
+                      .slice(indiceInicial, indiceFinal)
+                      .reduce((sum, y) => sum + (y < 550 ? (550 + (550 - y)) : y), 0) / (indiceFinal - indiceInicial)
+                  }),
+                  pointRadius: 0,
+                  fill: false
+                }
+              ],
+            }}
+            options={{
+              maintainAspectRatio: false,
+              animation: {
+                duration: 0
+              },
+              legend: {
+                display: false
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    suggestedMin: 550,
+                    suggestedMax: 700,
+                    autoSkip: false,
+                    stepSize: 50
+                  },
+                  gridLines: {
+                    display: false,
+                  }
+                }],
+                xAxes: [{
+                  gridLines: {
+                    display: false
+                  },
+                  ticks: {
+                    display: false
+                  }
+                }]
               }
-            ],
-          }}
-          options={{
-            maintainAspectRatio: false,
-            animation: {
-              duration: 0
-            },
-            legend: {
-              display: false
-            },
-            scales: {
-              yAxes: [{
-                ticks: {
-                  suggestedMin: 550,
-                  suggestedMax: 650,
-                  autoSkip: false,
-                  stepSize: 50
-                },
-                gridLines: {
-                  display: false,
-                }
-              }],
-              xAxes: [{
-                gridLines: {
-                  display: false
-                },
-                ticks: {
-                  display: false
-                }
-              }]
-            }
-          }}
-        />
+            }}
+          />
         </div>
         <div style={{flex: 1}}>
-        <Doughnut
-          data={{
-            labels: ['Activacion'],
-            datasets: [{
-              data: [250, activacion, Math.max(0, 250 - activacion)],
-              backgroundColor: ['transparent', 'red', 'transparent'],
-              borderColor: 'transparent'
-            }]
-          }}
-          options={{
-            maintainAspectRatio: false,
-            cutoutPercentage: 50,
-            rotation: 0,
-            animation: {
-              duration: 100
-            },
-            legend: {
-              display: true
-            }
-          }}
-        />
+          <Doughnut
+            data={{
+              labels: ['Activacion'],
+              datasets: [{
+                data: [activacion, Math.max(0, 2 * 550 - activacion)],
+                backgroundColor: ['red', 'transparent'],
+                borderColor: 'transparent'
+              }]
+            }}
+            options={{
+              maintainAspectRatio: false,
+              cutoutPercentage: 50,
+              rotation: -Math.PI,
+              animation: {
+                duration: 100
+              },
+              legend: {
+                display: true
+              }
+            }}
+          />
+          </div>
         </div>
-      </div>
       <div className="App__angulos">
         <h1>Ángulos</h1>
         {datos.rotaciones[0] && datos.rotaciones.slice(-1)[0].map(({ mac }, i) => {
@@ -174,17 +182,17 @@ const App = () => {
           const colores = ['red', 'green', 'blue']
           return (
           <div key={`${mac}-sensor-${i}`} className="App__angulos_segmento">
-            <h1>{obtenerSegmento(i)[0]}</h1>
-            <h2>{`Sensor en el ${obtenerSegmento(i)[1]} (MAC: ${mac})`}</h2>
+            <h1>{obtenerSegmento(i)[1]}</h1>
+            <h2>{`Sensor en el ${obtenerSegmento(i)[0]} (MAC: ${mac})`}</h2>
             <Line
               data={{
                 labels: euler.map((e, i) => i),
-                datasets: ['roll', 'pitch', 'yaw'].map((x, i) => ({
-                  data: euler.map(rot => rot[x]),
+                datasets: ['roll', 'pitch', 'yaw'].map((a, i) => ({
+                  data: euler.map(rot => rot[a]),
                   fill: false,
                   pointRadius: 0,
                   borderColor: colores[i],
-                  label: x
+                  label: traducirAngulo(a)
                 }))
               }}
               options={{
@@ -192,7 +200,8 @@ const App = () => {
                   yAxes: [{
                     ticks: {
                       suggestedMin: -180,
-                      suggestedMax: 180
+                      suggestedMax: 180,
+                      stepSize: 60
                     },
                     gridLines: {
                       display: false
