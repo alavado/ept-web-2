@@ -3,6 +3,7 @@ import { w3cwebsocket } from 'websocket'
 import './App.css'
 import { Line, Doughnut } from 'react-chartjs-2'
 import { toEulerAngles } from '../../helpers/euler'
+import Quaternion from 'quaternion'
 
 const App = () => {
 
@@ -71,17 +72,15 @@ const App = () => {
 
   const obtenerSegmento = i => {
     switch (i) {
-      case 0: return 'Mano'
-      case 1: return 'Antebrazo'
-      default: return 'Brazo'
+      case 0: return ['Mano', 'Muñeca']
+      case 1: return ['Antebrazo', 'Codo']
+      default: return ['Brazo', 'Hombro']
     }
   }
 
-  console.log(datos.rotaciones)
-
   return (
     <div className="App">
-      <h1>EPT bkn</h1>
+      <h1>EPT ACHS bkn</h1>
       <button onClick={e => conectar('compsci.cl:2304/input')}>Conectar</button>
       <div className="App__emg">
         <h1>EMG</h1>
@@ -92,7 +91,13 @@ const App = () => {
             datasets: [
               {
                 label: 'emg',
-                data: datos.emg.v.slice(0, 90).reverse(),
+                data: datos.emg.v.slice(0, 90).reverse().map((x, i, arr) => {
+                  const indiceInicial = Math.max(0, i - 10)
+                  const indiceFinal = Math.min(i + 10, arr.length - 1)
+                  return arr
+                    .slice(indiceInicial, indiceFinal)
+                    .reduce((sum, y) => sum + (y < 550 ? (550 + (550 - y)) : y), 0) / (indiceFinal - indiceInicial)
+                }),
                 pointRadius: 0,
                 fill: false
               }
@@ -109,8 +114,8 @@ const App = () => {
             scales: {
               yAxes: [{
                 ticks: {
-                  suggestedMin: 450,
-                  suggestedMax: 700,
+                  suggestedMin: 550,
+                  suggestedMax: 650,
                   autoSkip: false,
                   stepSize: 50
                 },
@@ -156,20 +161,31 @@ const App = () => {
       </div>
       <div className="App__angulos">
         <h1>Ángulos</h1>
-        {datos.rotaciones[0] &&
-        datos.rotaciones.slice(-1)[0].map((r, i) => (
-          <div className="App__angulos_segmento">
-            <h1>{`${obtenerSegmento(i)} (${r.mac})`}</h1>
+        {datos.rotaciones[0] && datos.rotaciones.slice(-1)[0].map(({ mac }, i) => {
+          let cuaterniones = datos.rotaciones.map(d => d.find(r => r.mac === mac).q)
+          // console.log({cuaterniones})
+          // const [wMano, xMano, yMano, zMano] = cuaterniones[0]
+          // const [wAntebrazo, xAntebrazo, yAntebrazo, zAntebrazo] = cuaterniones[1]
+          // cuaterniones[0] =
+          //   (new Quaternion(wMano, xMano, yMano, zMano)).mul(
+          //     new Quaternion(wAntebrazo, xAntebrazo, yAntebrazo, zAntebrazo).inverse()
+          //   ).toVector()
+          const euler = cuaterniones.map(q => toEulerAngles(q))
+          const colores = ['red', 'green', 'blue']
+          return (
+          <div key={`${mac}-sensor-${i}`} className="App__angulos_segmento">
+            <h1>{obtenerSegmento(i)[0]}</h1>
+            <h2>{`Sensor en el ${obtenerSegmento(i)[1]} (MAC: ${mac})`}</h2>
             <Line
               data={{
-                labels: datos.rotaciones.map((rot, i) => i),
-                datasets: [
-                  {
-                    data: datos.rotaciones.map(rot => toEulerAngles(rot[i].q).roll),
-                    fill: false,
-                    pointRadius: 0
-                  }
-                ]
+                labels: euler.map((e, i) => i),
+                datasets: ['roll', 'pitch', 'yaw'].map((x, i) => ({
+                  data: euler.map(rot => rot[x]),
+                  fill: false,
+                  pointRadius: 0,
+                  borderColor: colores[i],
+                  label: x
+                }))
               }}
               options={{
                 scales: {
@@ -195,12 +211,12 @@ const App = () => {
                   duration: 0
                 },
                 legend: {
-                  display: false
+                  position: 'bottom'
                 }
               }}
             />
           </div>
-        ))}
+        )})}
       </div>
       {/* <p>{mensaje}</p> */}
     </div>
