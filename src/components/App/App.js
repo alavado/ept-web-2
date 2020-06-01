@@ -6,10 +6,28 @@ import { toEulerAngles } from '../../helpers/euler'
 import Header from '../Header'
 import { urlServidorWS } from '../../config/urls'
 // import Quaternion from 'quaternion'
+import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
+  
+  const { sensores } = useSelector(state => state.sensores)
+  const dispatch = useDispatch()
 
-  return <Header />
+  useEffect(() => {
+    const actualizarSensores = () => dispatch({ type: 'sensores/actualizar_async' })
+    const interval = setInterval(actualizarSensores, 22)
+    return () => clearTimeout(interval)
+  }, [dispatch])
+
+  return (
+    <div>
+      <Header />
+      <div>
+        <button>aaa</button>
+        <div>{JSON.stringify(sensores)}</div>
+      </div>
+    </div>
+  )
 }
 
 export default App

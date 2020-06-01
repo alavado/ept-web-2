@@ -1,3 +1,5 @@
 import sensores from './sensores'
 
-export default sensores
+export default {
+  sensores
+}

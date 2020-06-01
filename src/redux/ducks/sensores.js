@@ -1,17 +1,18 @@
-const ACTUALIZAR = 'sensores/actualizar'
+const actualizar = 'sensores/actualizar'
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
-    case ACTUALIZAR:
+    case actualizar:
       return {
         ...state,
         sensores: action.payload
       }
-    default:
+    default: {
       return state
+    }
   }
 }
 
-export function actualizarMediciones() {
-  return { type: ACTUALIZAR }
+export function actualizarMediciones(msg) {
+  return { type: actualizar, payload: msg }
 }
