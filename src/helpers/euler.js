@@ -25,9 +25,5 @@
     let cosy_cosp = 1 - 2 * (y * y + z * z)
     angles.yaw = Math.atan2(siny_cosp, cosy_cosp)
 
-    return {
-      roll: angles.roll * 180 / Math.PI,
-      pitch: angles.pitch * 180 / Math.PI,
-      yaw: angles.yaw * 180 / Math.PI
-    }
+    return [angles.roll, angles.pitch, angles.yaw].map(x => x * 180 / Math.PI)
   }

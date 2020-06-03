@@ -2,21 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { w3cwebsocket } from 'websocket'
 import './App.css'
 import { Line, Doughnut } from 'react-chartjs-2'
-import { toEulerAngles } from '../../helpers/euler'
 import Header from '../Header'
-import { urlServidorWS } from '../../config/urls'
-// import Quaternion from 'quaternion'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
   
-  const { sensores } = useSelector(state => state.sensores)
+  const { datosOriginales, imus } = useSelector(state => state.sensores)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const actualizarSensores = () => dispatch({ type: 'sensores/actualizar_async' })
     const interval = setInterval(actualizarSensores, 22)
-    return () => clearTimeout(interval)
+    return () => clearInterval(interval)
   }, [dispatch])
 
   return (
@@ -24,7 +21,8 @@ const App = () => {
       <Header />
       <div>
         <button>aaa</button>
-        <div>{JSON.stringify(sensores)}</div>
+        <div>{JSON.stringify(datosOriginales)}</div>
+        <div>{JSON.stringify(imus)}</div>
       </div>
     </div>
   )
