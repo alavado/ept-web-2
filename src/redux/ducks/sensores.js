@@ -1,8 +1,7 @@
-import Quaternion from 'quaternion'
-import { toEulerAngles } from '../../helpers/euler'
+import { toEulerAngles, calcularRotacionRelativa } from '../../helpers/rotaciones'
 
 const actualizar = 'sensores/actualizar'
-const segmentos = ['brazo', 'antebrazo', 'codo']
+const segmentos = ['brazo', 'antebrazo', 'mano']
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
@@ -15,8 +14,9 @@ export default function reducer(state = {}, action = {}) {
         imus = macs.map((mac, i) => ({
           mac,
           segmento: segmentos[i],
+          datosOriginales: rotaciones[mac],
           angulosAbsolutos: toEulerAngles(rotaciones[mac]),
-          angulosRelativos: toEulerAngles(rotaciones[mac])
+          angulosRelativos: calcularRotacionRelativa(macs.slice(0, i + 1).map(m => rotaciones[m]))
         }))
       }
       return {

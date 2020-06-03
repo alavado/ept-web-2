@@ -8,6 +8,7 @@ let msg = 'conectando'
 socket.onmessage = e => {
   if (typeof e.data === 'string') {
     msg = JSON.parse(e.data)
+    socket.send('ack')
   }
 }
 socket.onerror = () => {
@@ -15,6 +16,7 @@ socket.onerror = () => {
 }
 socket.onopen = () => {
   msg = 'conexión ws establecida'
+  socket.send('ack')
 }
 socket.onclose = () => {
   msg = 'conexión ws cerrada'

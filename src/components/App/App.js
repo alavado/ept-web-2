@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { w3cwebsocket } from 'websocket'
 import './App.css'
 import { Line, Doughnut } from 'react-chartjs-2'
 import Header from '../Header'
@@ -7,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
   
-  const { datosOriginales, imus } = useSelector(state => state.sensores)
+  const { imus } = useSelector(state => state.sensores)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -16,13 +15,23 @@ const App = () => {
     return () => clearInterval(interval)
   }, [dispatch])
 
+  if (!imus) {
+    return null
+  }
+
   return (
     <div>
       <Header />
       <div>
-        <button>aaa</button>
-        <div>{JSON.stringify(datosOriginales)}</div>
-        <div>{JSON.stringify(imus)}</div>
+        {imus.map(imu => (
+          <div key={imu.mac}>
+            <div>{imu.mac}</div>
+            <div>{imu.segmento}</div>
+            <div>{imu.angulosRelativos.map((angulo, i) => (
+              <div key={`${imu.mac}-angulo-${i}`}>{angulo}</div>
+            ))}</div>
+          </div>
+        ))}
       </div>
     </div>
   )
