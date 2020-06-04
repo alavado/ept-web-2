@@ -1,7 +1,7 @@
 import { toEulerAngles, calcularRotacionRelativa } from '../../helpers/rotaciones'
 
 const actualizar = 'sensores/actualizar'
-const segmentos = ['brazo', 'antebrazo', 'mano']
+const segmentos = ['hombro', 'codo', 'muñeca']
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
@@ -19,10 +19,18 @@ export default function reducer(state = {}, action = {}) {
           angulosRelativos: calcularRotacionRelativa(macs.slice(0, i + 1).map(m => rotaciones[m]))
         }))
       }
+      let emgs = []
+      if (datosOriginales && datosOriginales.e) {
+        emgs = datosOriginales.e.v.reduce((prev, valor) => {
+          const lecturas = valor.split(',').map(Number)
+          return prev.map((emg, i) => ({ ...emg, valores: [...emg.valores, lecturas[i]] }))
+        }, datosOriginales.e.v[0].split(',').map((v, i) => ({ id: `EMG ${i + 1}`, valores: [Number(v)] })))
+      }
       return {
         ...state,
         datosOriginales,
-        imus
+        imus,
+        emgs
       }
     default: {
       return state

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
-import { Line, Doughnut } from 'react-chartjs-2'
 import Header from '../Header'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
   
-  const { imus } = useSelector(state => state.sensores)
+  const { imus, emgs } = useSelector(state => state.sensores)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -15,7 +14,7 @@ const App = () => {
     return () => clearInterval(interval)
   }, [dispatch])
 
-  if (!imus) {
+  if (!imus || !emgs) {
     return null
   }
 
@@ -24,12 +23,20 @@ const App = () => {
       <Header />
       <div>
         {imus.map(imu => (
-          <div style={{ margin: '2em' }} key={imu.mac}>
+          <div style={{ margin: '1.5em' }} key={imu.mac}>
             <div>{imu.segmento}</div>
             <div>{imu.mac}</div>
             <div>{imu.angulosRelativos.map((angulo, i) => (
-              <div key={`${imu.mac}-angulo-${i}`}>{angulo}</div>
+              <div key={`${imu.mac}-angulo-${i}`}>{angulo.toLocaleString('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 2 })}°</div>
             ))}</div>
+          </div>
+        ))}
+      </div>
+      <div>
+        {emgs.map(emg => (
+          <div style={{ margin: '1.5em' }} key={emg.id}>
+            <div>{emg.id}</div>
+            <div>{emg.valores[0]}</div>
           </div>
         ))}
       </div>
