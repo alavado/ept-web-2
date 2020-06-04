@@ -24,9 +24,9 @@ const App = () => {
       <Header />
       <div>
         {imus.map(imu => (
-          <div key={imu.mac}>
-            <div>{imu.mac}</div>
+          <div style={{ margin: '2em' }} key={imu.mac}>
             <div>{imu.segmento}</div>
+            <div>{imu.mac}</div>
             <div>{imu.angulosRelativos.map((angulo, i) => (
               <div key={`${imu.mac}-angulo-${i}`}>{angulo}</div>
             ))}</div>

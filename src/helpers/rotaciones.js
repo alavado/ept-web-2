@@ -31,16 +31,9 @@ export const calcularRotacionRelativa = cuaterniones => {
   if (cuaterniones.length < 2) {
     return toEulerAngles(cuaterniones[0])
   }
-  if (cuaterniones.length === 2) {
-    const cuaternionSegmentoSuperior = new Quaternion(cuaterniones[0]).normalize()
-    const cuaternionSegmento = new Quaternion(cuaterniones[1]).normalize()
+  else {
+    const cuaternionSegmentoSuperior = new Quaternion(cuaterniones.slice(-2)[0]).normalize()
+    const cuaternionSegmento = new Quaternion(cuaterniones.slice(-1)[0]).normalize()
     return toEulerAngles(cuaternionSegmentoSuperior.conjugate().mul(cuaternionSegmento).toVector())
-  }
-  else if (cuaterniones.length === 3) {
-    const cuaternionSegmentoMasSuperior = new Quaternion(cuaterniones[0]).normalize()
-    const cuaternionSegmentoSuperior = new Quaternion(cuaterniones[1]).normalize()
-    const cuaternionSegmentoSuperiorCorregido = cuaternionSegmentoMasSuperior.conjugate().mul(cuaternionSegmentoSuperior)
-    const cuaternionSegmento = new Quaternion(cuaterniones[2]).normalize()
-    return toEulerAngles(cuaternionSegmentoSuperiorCorregido.conjugate().mul(cuaternionSegmentoSuperior.conjugate().mul(cuaternionSegmento)).toVector())
   }
 }
