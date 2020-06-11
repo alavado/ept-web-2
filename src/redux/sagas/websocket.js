@@ -26,7 +26,6 @@ export function* webSocketSaga() {
   yield put(actualizarMediciones(msg))
 }
 
-// Our watcher Saga: spawn a new incrementAsync task on each INCREMENT_ASYNC
 export function* watchIncrementAsync() {
   yield takeEvery('sensores/actualizar_async', webSocketSaga)
 }

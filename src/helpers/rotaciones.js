@@ -37,3 +37,9 @@ export const calcularRotacionRelativa = cuaterniones => {
     return toEulerAngles(cuaternionSegmentoSuperior.conjugate().mul(cuaternionSegmento).toVector())
   }
 }
+
+export const corregirCuaternion = (cuaternion, correccion) => {
+  const cuaternionOriginal = new Quaternion(cuaternion).normalize()
+  const cuaternionCorreccion = new Quaternion(correccion).normalize()
+  return cuaternionCorreccion.conjugate().mul(cuaternionOriginal).toVector()
+}

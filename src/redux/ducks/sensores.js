@@ -1,6 +1,9 @@
-import { toEulerAngles, calcularRotacionRelativa } from '../../helpers/rotaciones'
+import { toEulerAngles, calcularRotacionRelativa, corregirCuaternion } from '../../helpers/rotaciones'
+import Quaternion from 'quaternion'
 
 const actualizar = 'sensores/actualizar'
+const calibrar = 'sensores/calibrar'
+
 const segmentos = ['hombro', 'codo', 'muñeca']
 
 export default function reducer(state = {}, action = {}) {
@@ -9,14 +12,14 @@ export default function reducer(state = {}, action = {}) {
       const datosOriginales = action.payload
       let imus = []
       if (datosOriginales && datosOriginales.r) {
-        const { r: rotaciones } = datosOriginales
-        const macs = Object.keys(rotaciones)
+        const { r: cuaterniones } = datosOriginales
+        const macs = Object.keys(cuaterniones)
         imus = macs.map((mac, i) => ({
           mac,
           segmento: segmentos[i],
-          datosOriginales: rotaciones[mac],
-          angulosAbsolutos: toEulerAngles(rotaciones[mac]),
-          angulosRelativos: calcularRotacionRelativa(macs.slice(0, i + 1).map(m => rotaciones[m]))
+          cuaternion: cuaterniones[mac],
+          angulosAbsolutos: toEulerAngles(corregirCuaternion(cuaterniones[mac], state.rotacionesCero[i])),
+          angulosRelativos: calcularRotacionRelativa(macs.slice(0, i + 1).map((m, j) => corregirCuaternion(cuaterniones[m], state.rotacionesCero[j])))
         }))
       }
       let emgs = []
@@ -30,8 +33,15 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         datosOriginales,
         imus,
-        emgs
+        emgs,
+        rotacionesCero: (state.rotacionesCero && state.rotacionesCero.length === imus.length && state.rotacionesCero) || imus.map(() => Quaternion.ONE)
       }
+    case calibrar: {
+      return {
+        ...state,
+        rotacionesCero: state.imus.map(imu => imu.cuaternion)
+      }
+    }
     default: {
       return state
     }
@@ -40,4 +50,8 @@ export default function reducer(state = {}, action = {}) {
 
 export function actualizarMediciones(msg) {
   return { type: actualizar, payload: msg }
+}
+
+export const fijarCero = () => {
+  return { type: calibrar }
 }
