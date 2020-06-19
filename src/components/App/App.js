@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState, useCallback } from 'react'
+import React, { useMemo, useRef, useState, useCallback, Suspense, useEffect } from 'react'
 import './App.css'
 import Header from '../Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { fijarCero } from '../../redux/ducks/sensores'
+import Box from './Box'
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
@@ -45,7 +46,7 @@ const PruebaR3F = () => {
 
   return (
     <group>
-      {nodesCubes}
+      {/* {nodesCubes} */}
       <orbitControls args={[camera, domElement]} />
     </group>
   )
@@ -56,20 +57,22 @@ const App = () => {
   const { imus, emgs } = useSelector(state => state.sensores)
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   const actualizarSensores = () => dispatch({ type: 'sensores/actualizar_async' })
-  //   const interval = setInterval(actualizarSensores, 22)
-  //   return () => clearInterval(interval)
-  // // }, [dispatch])
+  useEffect(() => {
+    const actualizarSensores = () => dispatch({ type: 'sensores/actualizar_async' })
+    const interval = setInterval(actualizarSensores, 22)
+    return () => clearInterval(interval)
+  }, [dispatch])
 
-  // if (!imus || !emgs) {
-  //   return null
-  // }
+  if (!imus || !emgs || imus.length === 0) {
+    return null
+  }
+
+  console.log(imus)
 
   return (
     <div>
       <Header />
-      {/* <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         {imus.map(imu => (
           <div style={{ margin: '1.5em' }} key={imu.mac}>
             <div>{imu.segmento}</div>
@@ -88,14 +91,17 @@ const App = () => {
             <div>{emg.valores[0]}</div>
           </div>
         ))}
-      </div> */}
-      {/* <div style={{ backgroundColor: '#cecece', width: '180px', height: '180px' }}>
+      </div>
+      <div style={{ backgroundColor: '#cecece', width: '180px', height: '180px' }}>
         {imus.length > 1 && <div style={{ transform: `translateY(calc(-.5em + ${90 + imus[0].angulosRelativos[1]}px)) translateX(calc(-.5em + ${90 - imus[0].angulosRelativos[0]}px))`}}>o</div>}
-      </div> */}
-      <div style={{ width: '480px', height: '480px' }}>
+      </div>
+      <div style={{ width: '480px', height: '480px', backgroundColor: 'gray' }}>
         <Canvas>
           <ambientLight />
           <PruebaR3F />
+          <Suspense fallback={null}>
+            <Box cuaternion={imus[0].cuaternion} />
+          </Suspense>
         </Canvas>
       </div>
     </div>

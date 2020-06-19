@@ -1,7 +1,7 @@
-import Quaternion from 'quaternion'
+import { Quaternion } from 'three'
 
 export const toEulerAngles = q => {
-  const [w, x, y, z] = q
+  const [x, y, z, w] = q
   let angles = {
     roll: 0,
     pitch: 0,
@@ -32,14 +32,19 @@ export const calcularRotacionRelativa = cuaterniones => {
     return toEulerAngles(cuaterniones[0])
   }
   else {
-    const cuaternionSegmentoSuperior = new Quaternion(cuaterniones.slice(-2)[0]).normalize()
-    const cuaternionSegmento = new Quaternion(cuaterniones.slice(-1)[0]).normalize()
-    return toEulerAngles(cuaternionSegmentoSuperior.conjugate().mul(cuaternionSegmento).toVector())
+    const cuaternionSegmentoSuperior = crearCuaternion(cuaterniones.slice(-2)[0])
+    const cuaternionSegmento = crearCuaternion(cuaterniones.slice(-1)[0])
+    return toEulerAngles(cuaternionSegmentoSuperior.conjugate().multiply(cuaternionSegmento).toArray())
   }
 }
 
 export const corregirCuaternion = (cuaternion, correccion) => {
-  const cuaternionOriginal = new Quaternion(cuaternion).normalize()
-  const cuaternionCorreccion = new Quaternion(correccion).normalize()
-  return cuaternionCorreccion.conjugate().mul(cuaternionOriginal).toVector()
+  const cuaternionOriginal = crearCuaternion(cuaternion)
+  const cuaternionCorreccion = correccion ? crearCuaternion(correccion) : new Quaternion()
+  return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
+}
+
+const crearCuaternion = cuaternionWXYZ => {
+  const [w, x, y, z] = cuaternionWXYZ
+  return new Quaternion(x, y, z, w).normalize()
 }
