@@ -6,6 +6,7 @@ import { fijarCero } from '../../redux/ducks/sensores'
 import Box from './Box'
 import { Canvas, extend, useFrame, useThree } from 'react-three-fiber'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import ModeloMMR from './ModeloMMR'
 
 extend({ OrbitControls })
 
@@ -98,7 +99,7 @@ const App = () => {
           <ambientLight />
           <PruebaR3F />
           <Suspense fallback={null}>
-            <Box cuaternion={imus[0].cuaternionCorregido} />
+            <ModeloMMR cuaternion={imus[0].cuaternionCorregido} />
           </Suspense>
         </Canvas>
       </div>

@@ -1,6 +1,7 @@
 import { Quaternion } from 'three'
 
-// esta función la saqué de la versión en C++ de wikipedia
+// esta función la saqué de la versión en C++ de
+// https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 export const euler = q => {
   const [x, y, z, w] = q
   let angles = {
@@ -52,5 +53,5 @@ export const crearCuaternion = cuaternion => {
 
 export const formatearCuaternionMMR = cuaternion => {
   const [w, x, y, z] = cuaternion
-  return [x, y, z, w]
+  return [x, z, -y, w]
 }
