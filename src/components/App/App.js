@@ -98,7 +98,7 @@ const App = () => {
           <ambientLight />
           <PruebaR3F />
           <Suspense fallback={null}>
-            <Box cuaternion={imus[0].cuaternion} />
+            <Box cuaternion={imus[0].cuaternionCorregido} />
           </Suspense>
         </Canvas>
       </div>

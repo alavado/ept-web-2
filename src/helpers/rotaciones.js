@@ -27,14 +27,14 @@ export const toEulerAngles = q => {
   return [angles.roll, angles.pitch, angles.yaw].map(x => x * 180 / Math.PI)
 }
 
-export const calcularRotacionRelativa = cuaterniones => {
+export const calcularCuaternionRelativo = cuaterniones => {
   if (cuaterniones.length < 2) {
-    return toEulerAngles(cuaterniones[0])
+    return cuaterniones[0]
   }
   else {
     const cuaternionSegmentoSuperior = crearCuaternion(cuaterniones.slice(-2)[0])
     const cuaternionSegmento = crearCuaternion(cuaterniones.slice(-1)[0])
-    return toEulerAngles(cuaternionSegmentoSuperior.conjugate().multiply(cuaternionSegmento).toArray())
+    return cuaternionSegmentoSuperior.conjugate().multiply(cuaternionSegmento).toArray()
   }
 }
 
