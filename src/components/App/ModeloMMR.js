@@ -1,14 +1,18 @@
 import React, { useState, useRef, useMemo } from 'react'
-import { useLoader, useFrame } from 'react-three-fiber'
+import { useLoader, useFrame, useThree, extend } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Matrix4 } from 'three'
 import { crearCuaternion } from '../../helpers/rotaciones'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-export default function ModeloMMR(props) {
+extend({ OrbitControls })
+
+export default function ModeloMMR({ n, cuaternion }) {
   const group = useRef()
-  const gltf = useLoader(GLTFLoader, '/mmr.glb')
+  const gltf = useLoader(GLTFLoader, `modelos/mmr${n}.glb`)
   const [hueso, setHueso] = useState(undefined)
   const { nodes, materials } = gltf
+  const { camera, gl: { domElement } } = useThree()
 
   const skeleton = useMemo(() => {
     if (!gltf.skeleton) {
@@ -20,29 +24,32 @@ export default function ModeloMMR(props) {
 
   useFrame(() => {
     const m4 = new Matrix4()
-    m4.makeRotationFromQuaternion(crearCuaternion(props.cuaternion))
+    m4.makeRotationFromQuaternion(crearCuaternion(cuaternion))
     hueso.quaternion.setFromRotationMatrix(m4)
   })
 
   return (
-    <group ref={group} {...props} dispose={null}>
-      <primitive object={nodes.Carcasa} />
-      <primitive object={hueso} />
-      <skinnedMesh
-        material={materials.MaterialCarcasa}
-        geometry={nodes.Carcasa.geometry}
-        skeleton={skeleton}
-      />
-      <skinnedMesh
-        material={materials.MaterialInterior}
-        geometry={nodes.Boton.geometry}
-        skeleton={skeleton}
-      />
-      <skinnedMesh
-        material={materials.MaterialInterior}
-        geometry={nodes.Hoyito.geometry}
-        skeleton={skeleton}
-      />
-    </group>
+    <perspectiveCamera ref={camera} position={[0, 0, 3]}>
+      <group ref={group} dispose={null}>
+        {/* <orbitControls args={[camera, domElement]} /> */}
+        <primitive object={nodes.Carcasa} />
+        <primitive object={hueso} />
+        <skinnedMesh
+          material={materials.MaterialCarcasa}
+          geometry={nodes.Carcasa.geometry}
+          skeleton={skeleton}
+        />
+        <skinnedMesh
+          material={materials.MaterialInterior}
+          geometry={nodes.Boton.geometry}
+          skeleton={skeleton}
+        />
+        <skinnedMesh
+          material={materials.MaterialInterior}
+          geometry={nodes.Hoyito.geometry}
+          skeleton={skeleton}
+        />
+      </group>
+    </perspectiveCamera>
   )
 }
