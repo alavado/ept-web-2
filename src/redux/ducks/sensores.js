@@ -1,4 +1,4 @@
-import { toEulerAngles, calcularCuaternionRelativo, corregirCuaternion } from '../../helpers/rotaciones'
+import { euler, calcularCuaternionRelativo, corregirCuaternion, formatearCuaternionMMR } from '../../helpers/rotaciones'
 import { Quaternion } from 'three'
 
 const actualizar = 'sensores/actualizar'
@@ -15,11 +15,9 @@ export default function reducer(state = {}, action = {}) {
         const { r: cuaterniones } = datosOriginales
         const macs = Object.keys(cuaterniones)
         imus = macs.map((mac, i) => {
-          const [w, x, y, z] = cuaterniones[mac]
-          const cuaternion = [x, y, z, w]
+          const cuaternion = formatearCuaternionMMR(cuaterniones[mac])
           const cuaternionesCorregidos = macs.slice(0, i + 1).map((m, j) => {
-            const [w, x, y, z] = cuaterniones[m]
-            const cuaternion = [x, y, z, w]
+            const cuaternion = formatearCuaternionMMR(cuaterniones[m])
             return corregirCuaternion(cuaternion, state.rotacionesCero[j])
           })
           return {
@@ -27,8 +25,8 @@ export default function reducer(state = {}, action = {}) {
             segmento: segmentos[i],
             cuaternion,
             cuaternionCorregido: cuaternionesCorregidos.slice(-1)[0],
-            angulosAbsolutos: toEulerAngles(cuaternionesCorregidos.slice(-1)[0]),
-            angulosRelativos: toEulerAngles(calcularCuaternionRelativo(cuaternionesCorregidos))
+            angulosAbsolutos: euler(cuaternionesCorregidos.slice(-1)[0]),
+            angulosRelativos: euler(calcularCuaternionRelativo(cuaternionesCorregidos))
           }
         })
       }

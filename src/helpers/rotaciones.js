@@ -1,6 +1,7 @@
 import { Quaternion } from 'three'
 
-export const toEulerAngles = q => {
+// esta función la saqué de la versión en C++ de wikipedia
+export const euler = q => {
   const [x, y, z, w] = q
   let angles = {
     roll: 0,
@@ -47,4 +48,9 @@ export const corregirCuaternion = (cuaternion, correccion) => {
 export const crearCuaternion = cuaternion => {
   const [x, y, z, w] = cuaternion
   return new Quaternion(x, y, z, w).normalize()
+}
+
+export const formatearCuaternionMMR = cuaternion => {
+  const [w, x, y, z] = cuaternion
+  return [x, y, z, w]
 }
