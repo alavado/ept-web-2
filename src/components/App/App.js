@@ -1,10 +1,11 @@
 import React, { Suspense, useEffect } from 'react'
-import './App.css'
 import Header from '../Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { fijarCero } from '../../redux/ducks/sensores'
 import { Canvas } from 'react-three-fiber'
 import ModeloMMR from './ModeloMMR'
+import ModeloAndroide from './ModeloAndroide'
+import './App.css'
 
 const App = () => {
   
@@ -22,7 +23,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="App">
       <Header />
       <div style={{ display: 'flex' }}>
         {imus.map((imu, i) => (
@@ -46,6 +47,22 @@ const App = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div style={{ width: '380px', height: '380px', backgroundColor: 'white' }}>
+        <Canvas>
+          <ambientLight intensity={.95} />
+          <pointLight position={[2, 3, 0]} power={0.1}  />
+          <Suspense fallback={null}>
+            <ModeloAndroide
+              cuaternionBrazo={imus[0].cuaternionCorregido}
+              cuaternionAntebrazo={imus[1].cuaternionCorregido}
+              cuaternionMano={imus[2].cuaternionCorregido}
+              // cuaternionBrazo={imus[0].cuaternionCorregido}
+              // cuaternionAntebrazo={imus[1].cuaternionCorregido}
+              // cuaternionMano={imus[2].cuaternionCorregido}
+            />
+          </Suspense>
+        </Canvas>
       </div>
       <button onClick={() => dispatch(fijarCero())}>Corregir</button>
       <div style={{ display: 'flex' }}>
