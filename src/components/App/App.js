@@ -67,8 +67,6 @@ const App = () => {
     return null
   }
 
-  console.log(imus)
-
   return (
     <div>
       <Header />

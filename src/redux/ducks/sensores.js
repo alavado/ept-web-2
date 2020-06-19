@@ -14,13 +14,21 @@ export default function reducer(state = {}, action = {}) {
       if (datosOriginales && datosOriginales.r) {
         const { r: cuaterniones } = datosOriginales
         const macs = Object.keys(cuaterniones)
-        imus = macs.map((mac, i) => ({
-          mac,
-          segmento: segmentos[i],
-          cuaternion: cuaterniones[mac], // [w, x, y, z]
-          angulosAbsolutos: toEulerAngles(corregirCuaternion(cuaterniones[mac], state.rotacionesCero[i])),
-          angulosRelativos: calcularRotacionRelativa(macs.slice(0, i + 1).map((m, j) => corregirCuaternion(cuaterniones[m], state.rotacionesCero[j])))
-        }))
+        imus = macs.map((mac, i) => {
+          const [w, x, y, z] = cuaterniones[mac]
+          const cuaternion = [x, y, z, w]
+          return {
+            mac,
+            segmento: segmentos[i],
+            cuaternion,
+            angulosAbsolutos: toEulerAngles(corregirCuaternion(cuaternion, state.rotacionesCero[i])),
+            angulosRelativos: calcularRotacionRelativa(macs.slice(0, i + 1).map((m, j) => {
+              const [w, x, y, z] = cuaterniones[m]
+              const cuaternion = [x, y, z, w]
+              return corregirCuaternion(cuaternion, state.rotacionesCero[j])
+            }))
+          }
+        })
       }
       let emgs = []
       if (datosOriginales && datosOriginales.e) {

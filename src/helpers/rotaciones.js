@@ -44,7 +44,7 @@ export const corregirCuaternion = (cuaternion, correccion) => {
   return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
 }
 
-const crearCuaternion = cuaternionWXYZ => {
-  const [w, x, y, z] = cuaternionWXYZ
+export const crearCuaternion = cuaternion => {
+  const [x, y, z, w] = cuaternion
   return new Quaternion(x, y, z, w).normalize()
 }
