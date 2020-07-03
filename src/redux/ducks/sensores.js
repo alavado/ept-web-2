@@ -4,7 +4,7 @@ import { Quaternion } from 'three'
 const actualizar = 'sensores/actualizar'
 const calibrar = 'sensores/calibrar'
 
-const segmentos = ['hombro', 'codo', 'muñeca']
+const articulaciones = ['tronco', 'hombro', 'codo', 'muñeca']
 
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
@@ -17,12 +17,12 @@ export default function reducer(state = {}, action = {}) {
         imus = macs.map((mac, i) => {
           const cuaternion = formatearCuaternionMMR(cuaterniones[mac])
           const cuaternionesCorregidos = macs.slice(0, i + 1).map((m, j) => {
-            const cuaternion = formatearCuaternionMMR(cuaterniones[m])
+            let cuaternion = formatearCuaternionMMR(cuaterniones[m])
             return corregirCuaternion(cuaternion, state.rotacionesCero[j])
           })
           return {
             mac,
-            segmento: segmentos[i],
+            segmento: articulaciones[i],
             cuaternion,
             cuaternionCorregido: cuaternionesCorregidos.slice(-1)[0],
             angulosAbsolutos: euler(cuaternionesCorregidos.slice(-1)[0]),

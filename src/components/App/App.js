@@ -22,6 +22,8 @@ const App = () => {
     return null
   }
 
+  console.log(imus)
+
   return (
     <div className="App">
       <Header />
@@ -54,12 +56,10 @@ const App = () => {
           <pointLight position={[2, 3, 0]} power={0.1}  />
           <Suspense fallback={null}>
             <ModeloAndroide
-              cuaternionBrazo={imus[0].cuaternionCorregido}
-              cuaternionAntebrazo={imus[1].cuaternionCorregido}
-              cuaternionMano={imus[2].cuaternionCorregido}
-              // cuaternionBrazo={imus[0].cuaternionCorregido}
-              // cuaternionAntebrazo={imus[1].cuaternionCorregido}
-              // cuaternionMano={imus[2].cuaternionCorregido}
+              cuaternionTorso={imus[0].cuaternionCorregido}
+              cuaternionBrazo={imus[1].cuaternionCorregido}
+              cuaternionAntebrazo={imus[2].cuaternionCorregido}
+              cuaternionMano={imus[3].cuaternionCorregido}
             />
           </Suspense>
         </Canvas>
