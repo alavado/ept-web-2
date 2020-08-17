@@ -36,13 +36,17 @@ export const calcularCuaternionRelativo = cuaterniones => {
   else {
     const cuaternionSegmentoSuperior = crearCuaternion(cuaterniones.slice(-2)[0])
     const cuaternionSegmento = crearCuaternion(cuaterniones.slice(-1)[0])
-    return cuaternionSegmentoSuperior.conjugate().multiply(cuaternionSegmento).toArray()
+    return cuaternionSegmentoSuperior.conjugate().multiply(cuaternionSegmento).normalize().toArray()
   }
 }
 
-export const corregirCuaternion = (cuaternion, correccion) => {
+export const corregirCuaternion = (cuaternion, correccion, brazo = false) => {
   const cuaternionOriginal = crearCuaternion(cuaternion)
   const cuaternionCorreccion = correccion ? crearCuaternion(correccion) : new Quaternion()
+  if (brazo) {
+    const correccion = new Quaternion(1, 0, 0, 1).normalize()
+    return correccion.multiply(cuaternionCorreccion.conjugate().multiply(cuaternionOriginal)).toArray()
+  }
   return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
 }
 
@@ -53,5 +57,5 @@ export const crearCuaternion = cuaternion => {
 
 export const formatearCuaternionMMR = cuaternion => {
   const [w, x, y, z] = cuaternion
-  return [x, z, -y, w]
+  return [y, -x, -z, w]
 }

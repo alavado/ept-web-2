@@ -7,7 +7,6 @@ const socket = new w3cwebsocket(urlServidorWS, 'message')
 let msg = 'conectando'
 socket.onmessage = e => {
   if (typeof e.data === 'string') {
-    console.log(e.data)
     if (e.data !== 'no hay nada') {
       msg = JSON.parse(e.data)
     }

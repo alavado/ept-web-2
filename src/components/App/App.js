@@ -22,18 +22,23 @@ const App = () => {
     return null
   }
 
-  console.log(imus)
-
   return (
     <div className="App">
       <Header />
       <div style={{ display: 'flex' }}>
         {imus.map((imu, i) => (
-          <div style={{ margin: '1.5em' }} key={imu.mac}>
+          <div
+            style={{ margin: '1.5em' }}
+            key={imu.mac}
+          >
             <div>{imu.segmento}</div>
             <div>{imu.mac}</div>
             <div>{imu.angulosRelativos.map((angulo, i) => (
-              <div key={`${imu.mac}-angulo-${i}`}>{angulo.toLocaleString('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 2 })}°</div>
+              <div
+                key={`${imu.mac}-angulo-${i}`}
+              >
+                {angulo.toLocaleString('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 2 })}°
+              </div>
             ))}</div>
             <div
               key={`r3f-imu-${i}`}
@@ -59,7 +64,7 @@ const App = () => {
               cuaternionTorso={imus[0].cuaternionCorregido}
               cuaternionBrazo={imus[1].cuaternionCorregido}
               cuaternionAntebrazo={imus[2].cuaternionCorregido}
-              cuaternionMano={imus[3].cuaternionCorregido}
+              cuaternionMano={imus[3].cuaternionRelativo}
             />
           </Suspense>
         </Canvas>

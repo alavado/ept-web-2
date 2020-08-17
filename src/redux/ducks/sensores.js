@@ -18,15 +18,17 @@ export default function reducer(state = {}, action = {}) {
           const cuaternion = formatearCuaternionMMR(cuaterniones[mac])
           const cuaternionesCorregidos = macs.slice(0, i + 1).map((m, j) => {
             let cuaternion = formatearCuaternionMMR(cuaterniones[m])
-            return corregirCuaternion(cuaternion, state.rotacionesCero[j])
+            return corregirCuaternion(cuaternion, state.rotacionesCero[j], i === 1)
           })
+          const cuaternionRelativo = calcularCuaternionRelativo(cuaternionesCorregidos)
           return {
             mac,
             segmento: articulaciones[i],
             cuaternion,
             cuaternionCorregido: cuaternionesCorregidos.slice(-1)[0],
+            cuaternionRelativo,
             angulosAbsolutos: euler(cuaternionesCorregidos.slice(-1)[0]),
-            angulosRelativos: euler(calcularCuaternionRelativo(cuaternionesCorregidos))
+            angulosRelativos: euler(cuaternionRelativo)
           }
         })
       }
