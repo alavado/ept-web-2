@@ -2,6 +2,7 @@
   font-family: 'Open Sans', sans-serif;
   background: linear-gradient(180deg, #12132B 0%, #191B3E 100%);
   min-height: 100vh;
+  color: white;
 }
 
 .App__emg {
