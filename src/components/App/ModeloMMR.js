@@ -20,7 +20,7 @@ export default function ModeloMMR({ n, cuaternion }) {
 
   useFrame(() => {
     const m4 = new Matrix4()
-    m4.makeRotationFromQuaternion(crearCuaternion(cuaternion))
+    m4.makeRotationFromQuaternion(crearCuaternion(cuaternion, true))
     hueso.quaternion.setFromRotationMatrix(m4)
   })
 

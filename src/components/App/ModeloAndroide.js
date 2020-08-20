@@ -2,7 +2,7 @@ import React, { useState, useRef, useMemo } from 'react'
 import { useLoader, useFrame, useThree, extend } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Matrix4 } from 'three'
-import { crearCuaternion, corregirCuaternion } from '../../helpers/rotaciones'
+import { crearCuaternion, crearCuaternionTorso } from '../../helpers/rotaciones'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 extend({ OrbitControls })
@@ -22,16 +22,17 @@ export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuate
     if (!gltf.skeleton) {
       gltf.skeleton = gltf.nodes.Figura.skeleton
     }
+    console.log(gltf.nodes.Figura.skeleton.bones)
     setTorso(gltf.nodes.Figura.skeleton.bones[0])
-    setBrazo(gltf.nodes.Figura.skeleton.bones[4])
-    setAntebrazo(gltf.nodes.Figura.skeleton.bones[5])
-    setMano(gltf.nodes.Figura.skeleton.bones[6])
+    setBrazo(gltf.nodes.Figura.skeleton.bones[6])
+    setAntebrazo(gltf.nodes.Figura.skeleton.bones[7])
+    setMano(gltf.nodes.Figura.skeleton.bones[8])
     return gltf.skeleton
   }, [gltf])
 
   useFrame(() => {
     const m8 = new Matrix4()
-    m8.makeRotationFromQuaternion(crearCuaternion(cuaternionTorso))
+    m8.makeRotationFromQuaternion(crearCuaternionTorso(cuaternionTorso))
     torso.quaternion.setFromRotationMatrix(m8)
     const m5 = new Matrix4()
     m5.makeRotationFromQuaternion(crearCuaternion(cuaternionBrazo))

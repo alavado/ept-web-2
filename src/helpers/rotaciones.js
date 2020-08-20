@@ -48,12 +48,21 @@ export const corregirCuaternion = (cuaternion, correccion, torso = false) => {
   return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
 }
 
-export const crearCuaternion = cuaternion => {
+export const crearCuaternion = (cuaternion, absoluto) => {
   const [x, y, z, w] = cuaternion
+  if (absoluto) {
+    return new Quaternion(y, x, z, w).normalize()
+  }
   return new Quaternion(x, y, z, w).normalize()
 }
 
 export const formatearCuaternionMMR = cuaternion => {
   const [w, x, y, z] = cuaternion
-  return [-z, x, -y, w]
+  return [-y, x, z, w]
+}
+
+export const crearCuaternionTorso = cuaternion => {
+  const q = crearCuaternion(cuaternion)
+  const correccion = new Quaternion(1, 0, 0, 1).normalize()
+  return correccion.multiply(q)
 }
