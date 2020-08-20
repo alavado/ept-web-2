@@ -36,8 +36,9 @@ const App = () => {
             <div>{imu.angulosRelativos.map((angulo, i) => (
               <div
                 key={`${imu.mac}-angulo-${i}`}
+                style={{ textAlign: 'right' }}
               >
-                {angulo.toLocaleString('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 2 })}°
+                {angulo.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}°
               </div>
             ))}</div>
             <div
@@ -63,7 +64,7 @@ const App = () => {
             <ModeloAndroide
               cuaternionTorso={imus[0].cuaternionCorregido}
               cuaternionBrazo={imus[1].cuaternionCorregido}
-              cuaternionAntebrazo={imus[2].cuaternionCorregido}
+              cuaternionAntebrazo={imus[2].cuaternionRelativo}
               cuaternionMano={imus[3].cuaternionRelativo}
             />
           </Suspense>

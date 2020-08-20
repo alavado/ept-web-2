@@ -46,15 +46,17 @@ export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuate
   })
 
   return (
-    <group ref={group} dispose={null}>
-      <orbitControls ref={ref} args={[camera, gl.domElement]} />
-      <primitive object={nodes.Figura} />
-      <primitive object={torso} />
-      <skinnedMesh
-        material={materials.Material}
-        geometry={nodes.Figura.geometry}
-        skeleton={skeleton}
-      />
-    </group>
+    <perspectiveCamera position={[0, 0, 3]}>
+      <group ref={group} dispose={null}>
+        <orbitControls ref={ref} args={[camera, gl.domElement]} />
+        <primitive object={nodes.Figura} />
+        <primitive object={torso} />
+        <skinnedMesh
+          material={materials.Material}
+          geometry={nodes.Figura.geometry}
+          skeleton={skeleton}
+        />
+      </group>
+    </perspectiveCamera>
   )
 }
