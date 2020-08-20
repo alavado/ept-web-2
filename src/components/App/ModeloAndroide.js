@@ -22,7 +22,6 @@ export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuate
     if (!gltf.skeleton) {
       gltf.skeleton = gltf.nodes.Figura.skeleton
     }
-    console.log(gltf.nodes.Figura.skeleton.bones)
     setTorso(gltf.nodes.Figura.skeleton.bones[0])
     setBrazo(gltf.nodes.Figura.skeleton.bones[6])
     setAntebrazo(gltf.nodes.Figura.skeleton.bones[7])

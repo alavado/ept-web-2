@@ -41,17 +41,14 @@ export const calcularCuaternionRelativo = cuaterniones => {
 export const corregirCuaternion = (cuaternion, correccion, torso = false) => {
   const cuaternionOriginal = crearCuaternion(cuaternion)
   const cuaternionCorreccion = correccion ? crearCuaternion(correccion) : new Quaternion()
-  // if (!torso) {
-  //   const correccion = new Quaternion(1, 0, 0, 1).normalize()
-  //   return correccion.multiply(cuaternionCorreccion.conjugate().multiply(cuaternionOriginal)).toArray()
-  // }
   return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
 }
 
 export const crearCuaternion = (cuaternion, absoluto) => {
   const [x, y, z, w] = cuaternion
   if (absoluto) {
-    return new Quaternion(y, x, z, w).normalize()
+    //[x, z, y, w] 
+    return new Quaternion(y, z, x, w).normalize()
   }
   return new Quaternion(x, y, z, w).normalize()
 }
