@@ -61,5 +61,6 @@ export const formatearCuaternionMMR = cuaternion => {
 export const crearCuaternionTorso = cuaternion => {
   const q = crearCuaternion(cuaternion)
   const correccion = new Quaternion(1, 0, 0, 1).normalize()
-  return correccion.multiply(q)
+  const { w, x, y, z } = correccion.multiply(q)
+  return new Quaternion(-x, -y, z, w)
 }
