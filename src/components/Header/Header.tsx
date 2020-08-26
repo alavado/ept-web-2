@@ -3,7 +3,7 @@ import './Header.css'
 
 const titulo: string = 'EPT ACHS'
 
-const Header = () => {
+const Header = (): JSX.Element => {
   return (
     <div>
       <h1>{titulo}</h1>
