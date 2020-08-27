@@ -1,22 +1,15 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import { useLoader, useFrame } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { Matrix4, Quaternion } from 'three'
-import { crearCuaternion } from '../../helpers/rotaciones'
+import { Matrix4 } from 'three'
+import { useQuaternion } from '../../hooks/useQuaternion'
 
 export default function ModeloMMR({ n, cuaternion }) {
   const group = useRef()
   const gltf = useLoader(GLTFLoader, `modelos/mmr${n}.glb`)
   const [hueso, setHueso] = useState(undefined)
-  const [cuaterniones, setCuaterniones] = useState({
-    anterior: new Quaternion(),
-    siguiente: new Quaternion(),
-    interpolado: new Quaternion(),
-    ti: 0,
-    tf: 0
-  })
+  const q = useQuaternion(cuaternion)
   const { nodes, materials } = gltf
-  const msInterpolacion = 1000.0 / 60
 
   const skeleton = useMemo(() => {
     if (!gltf.skeleton) {
@@ -26,31 +19,9 @@ export default function ModeloMMR({ n, cuaternion }) {
     return gltf.skeleton
   }, [gltf])
 
-  useEffect(() => {
-    if (cuaternion) {
-      setCuaterniones(prev => ({
-        ...prev,
-        anterior: prev.siguiente,
-        siguiente: crearCuaternion(cuaternion, true),
-        ti: prev.tf,
-        tf: Date.now()
-      }))
-    }
-  }, [cuaternion])
-
-  useEffect(() => {
-    const intervalInterpolacion = setInterval(() => {
-      setCuaterniones(prev => ({
-        ...prev,
-        interpolado: prev.anterior.slerp(prev.siguiente, (Date.now() - prev.tf) / (prev.tf - prev.ti))
-      }))
-    }, msInterpolacion)
-    return () => clearInterval(intervalInterpolacion)
-  }, [msInterpolacion])
-
   useFrame(() => {
     const m4 = new Matrix4()
-    m4.makeRotationFromQuaternion(cuaterniones.interpolado)
+    m4.makeRotationFromQuaternion(q.interpolado)
     hueso.quaternion.setFromRotationMatrix(m4)
   })
 

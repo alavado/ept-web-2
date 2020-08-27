@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Matrix4 } from 'three'
 import { crearCuaternion, crearCuaternionTorso } from '../../helpers/rotaciones'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { useQuaternion } from '../../hooks/useQuaternion'
 
 extend({ OrbitControls })
 
@@ -29,19 +30,24 @@ export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuate
     return gltf.skeleton
   }, [gltf])
 
+  const qTorso = useQuaternion(cuaternionTorso, true)
+  const qBrazo = useQuaternion(cuaternionBrazo)
+  const qAntebrazo = useQuaternion(cuaternionAntebrazo)
+  const qMano = useQuaternion(cuaternionMano)
+
   useFrame(() => {
     const m8 = new Matrix4()
-    m8.makeRotationFromQuaternion(crearCuaternionTorso(cuaternionTorso))
+    m8.makeRotationFromQuaternion(qTorso.interpolado)
     torso.quaternion.setFromRotationMatrix(m8)
     const m5 = new Matrix4()
-    m5.makeRotationFromQuaternion(crearCuaternion(cuaternionBrazo))
+    m5.makeRotationFromQuaternion(qBrazo.interpolado)
     // m5.makeRotationFromQuaternion(corregirCuaternion(cuaternionBrazo, [1, 0, 0, 1]))
     brazo.quaternion.setFromRotationMatrix(m5)
     const m6 = new Matrix4()
-    m6.makeRotationFromQuaternion(crearCuaternion(cuaternionAntebrazo))
+    m6.makeRotationFromQuaternion(qAntebrazo.interpolado)
     antebrazo.quaternion.setFromRotationMatrix(m6)
     const m7 = new Matrix4()
-    m7.makeRotationFromQuaternion(crearCuaternion(cuaternionMano))
+    m7.makeRotationFromQuaternion(qMano.interpolado)
     mano.quaternion.setFromRotationMatrix(m7)
   })
 
