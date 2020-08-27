@@ -46,7 +46,7 @@ export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuate
   })
 
   return (
-    <perspectiveCamera position={[0, 0, 3]}>
+    <perspectiveCamera position={[0, -1, -1]}>
       <group ref={group} dispose={null}>
         <orbitControls ref={ref} args={[camera, gl.domElement]} />
         <primitive object={nodes.Figura} />

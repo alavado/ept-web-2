@@ -59,7 +59,7 @@ const App = () => {
       <div style={{ width: '380px', height: '380px', backgroundColor: 'white' }}>
         <Canvas>
           <ambientLight intensity={.95} />
-          <pointLight position={[2, 3, 0]} power={0.1}  />
+          <directionalLight position={[10, 0, 0]} power={.5}  />
           <Suspense fallback={null}>
             <ModeloAndroide
               cuaternionTorso={imus[0].cuaternionCorregido}
