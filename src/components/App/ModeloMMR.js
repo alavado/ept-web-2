@@ -8,7 +8,7 @@ export default function ModeloMMR({ n, cuaternion }) {
   const group = useRef()
   const gltf = useLoader(GLTFLoader, `modelos/mmr${n}.glb`)
   const [hueso, setHueso] = useState(undefined)
-  const q = useQuaternion(cuaternion)
+  const q = useQuaternion(cuaternion, true)
   const { nodes, materials } = gltf
 
   const skeleton = useMemo(() => {

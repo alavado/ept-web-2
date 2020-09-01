@@ -4,7 +4,7 @@ import { crearCuaternion, crearCuaternionTorso } from "../helpers/rotaciones"
 
 const msInterpolacion = 1000.0 / 60
 
-export const useQuaternion = (cuaternion, torso = false) => {
+export const useQuaternion = (cuaternion, absoluto = false, torso = false) => {
 
   const [cuaterniones, setCuaterniones] = useState({
     anterior: new Quaternion(),
@@ -19,7 +19,7 @@ export const useQuaternion = (cuaternion, torso = false) => {
       setCuaterniones(prev => ({
         ...prev,
         anterior: prev.siguiente,
-        siguiente: torso ? crearCuaternionTorso(cuaternion) : crearCuaternion(cuaternion, true),
+        siguiente: torso ? crearCuaternionTorso(cuaternion) : crearCuaternion(cuaternion, absoluto),
         ti: prev.tf,
         tf: Date.now()
       }))

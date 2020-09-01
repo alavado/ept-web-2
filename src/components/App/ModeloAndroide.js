@@ -30,7 +30,7 @@ export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuate
     return gltf.skeleton
   }, [gltf])
 
-  const qTorso = useQuaternion(cuaternionTorso, true)
+  const qTorso = useQuaternion(cuaternionTorso, false, true)
   const qBrazo = useQuaternion(cuaternionBrazo)
   const qAntebrazo = useQuaternion(cuaternionAntebrazo)
   const qMano = useQuaternion(cuaternionMano)

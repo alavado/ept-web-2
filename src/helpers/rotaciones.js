@@ -55,6 +55,7 @@ export const crearCuaternion = (cuaternion, absoluto) => {
 
 export const formatearCuaternionMMR = cuaternion => {
   const [w, x, y, z] = cuaternion
+  // return [-y, x, z, w]
   return [-y, x, z, w]
 }
 
