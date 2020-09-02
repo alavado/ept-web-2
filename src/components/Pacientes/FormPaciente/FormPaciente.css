@@ -1,6 +1,13 @@
 .FormPaciente {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.FormPaciente__titulo {
+  font-size: 1.35rem;
+  margin: 2rem 0 .5rem 0;
+  font-weight: 500;
 }
 
 .FormPaciente__avatar {
@@ -8,4 +15,10 @@
   clip-path: circle(50% at 50% 50%);
   width: 200px;
   height: 200px;
+  margin: 1rem 0;
+}
+
+.FormPaciente__formulario {
+  display: flex;
+  flex-direction: column;
 }

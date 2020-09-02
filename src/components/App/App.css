@@ -1,10 +1,10 @@
 .App {
-  font-family: 'Open Sans', sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: white;
   color: #262626;
+  font-family: 'Catamaran', sans-serif;
 }
 
 .App__contenedor {
