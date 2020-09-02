@@ -6,6 +6,7 @@ import IMUs from '../IMUs'
 import { Switch, Route } from 'react-router-dom'
 import Login from '../Login'
 import Conexion from '../Conexion'
+import Pacientes from '../Pacientes'
 
 const App = () => {
 
@@ -14,6 +15,7 @@ const App = () => {
       <Header />
       <Switch>
         <Route exact path="/" component={Login} />
+        <Route path="/pacientes" component={Pacientes} />
         <Route path="/conexion" component={Conexion} />
         <Route path="/bla" component={() => <><IMUs /><GLB /></>} />
       </Switch>

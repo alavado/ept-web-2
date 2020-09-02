@@ -3,8 +3,8 @@ import loginMutation from '../../graphql/mutations/login'
 import { useMutation } from '@apollo/react-hooks'
 import { useDispatch } from 'react-redux'
 import { tomaEsteToken } from '../../redux/ducks/jwt'
+import Pacientes from '../Pacientes'
 import './Login.css'
-import Conexion from '../Conexion'
 
 const Login = () => {
 
@@ -14,7 +14,7 @@ const Login = () => {
   })
   const [redirigir, setRedirigir] = useState(false)
   const [error, setError] = useState(undefined)
-  const [mutate] = useMutation(loginMutation)
+  const [mutate, { loading }] = useMutation(loginMutation)
   const dispatch = useDispatch()
 
   const login = e => {
@@ -32,21 +32,23 @@ const Login = () => {
   }
 
   if (redirigir) {
-    return <Conexion />
+    return <Pacientes />
   }
 
   return (
     <div className="Login">
       <form onSubmit={login} className="Login_form">
         <input
+          disabled={loading}
           type="email"
           onChange={e => setVariables({ ...variables, identifier: e.target.value })}
         />
         <input
+          disabled={loading}
           type="password"
           onChange={e => setVariables({ ...variables, password: e.target.value })}
         />
-        <button type="submit">Ingresar</button>
+        <button disabled={loading} type="submit">Ingresar</button>
         {error}
       </form>
     </div>
