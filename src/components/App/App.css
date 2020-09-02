@@ -1,21 +1,6 @@
 .App {
   font-family: 'Open Sans', sans-serif;
-  background: linear-gradient(180deg, #12132B 0%, #191B3E 100%);
   min-height: 100vh;
-  color: white;
-}
-
-.App__emg {
   display: flex;
-  flex-direction: row;
-  background-color: rgba(255, 0, 0, .1);
-}
-
-.App__angulos {
-  background-color: rgba(0, 0, 255, .1);
-  display: flex;
-}
-
-.App__angulos_segmento {
-  flex: 1;
+  flex-direction: column;
 }
