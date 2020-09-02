@@ -1,0 +1,11 @@
+.FormPaciente {
+  display: flex;
+  flex-direction: column;
+}
+
+.FormPaciente__avatar {
+  border-radius: 100%;
+  clip-path: circle(50% at 50% 50%);
+  width: 200px;
+  height: 200px;
+}

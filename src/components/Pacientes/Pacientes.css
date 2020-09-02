@@ -1,3 +1,4 @@
-.Pacientes__lista {
-  background-color: red;
+.Pacientes {
+  display: flex;
+  flex: 1;
 }

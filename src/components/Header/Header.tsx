@@ -5,7 +5,7 @@ const titulo: string = 'EPT ACHS'
 
 const Header = (): JSX.Element => {
   return (
-    <div>
+    <div className="Header">
       <h1>{titulo}</h1>
     </div>
   )

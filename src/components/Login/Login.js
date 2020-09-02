@@ -12,7 +12,8 @@ const Login = () => {
     identifier: '',
     password: ''
   })
-  const [redirigir, setRedirigir] = useState(false)
+  // const [redirigir, setRedirigir] = useState(false)
+  const [redirigir, setRedirigir] = useState(true)
   const [error, setError] = useState(undefined)
   const [mutate, { loading }] = useMutation(loginMutation)
   const dispatch = useDispatch()

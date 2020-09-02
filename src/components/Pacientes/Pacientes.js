@@ -1,7 +1,9 @@
 import React from 'react'
 import query from '../../graphql/queries/pacientes'
 import { useQuery } from '@apollo/react-hooks'
+import { Link } from 'react-router-dom'
 import FilaPaciente from './FilaPaciente'
+import './Pacientes.css'
 
 const Pacientes = () => {
 
@@ -21,6 +23,7 @@ const Pacientes = () => {
           />
         ))}
       </div>
+      <Link to="/pacientes/nuevo">Agregar paciente</Link>
     </div>
   )
 }
