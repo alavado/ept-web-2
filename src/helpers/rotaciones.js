@@ -44,7 +44,7 @@ export const corregirCuaternion = (cuaternion, correccion, torso = false) => {
   return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
 }
 
-export const crearCuaternion = (cuaternion, absoluto) => {
+export const crearCuaternion = (cuaternion, absoluto, michkin) => {
   const [x, y, z, w] = cuaternion
   if (absoluto) {
     //[x, z, y, w] 
@@ -55,7 +55,6 @@ export const crearCuaternion = (cuaternion, absoluto) => {
 
 export const formatearCuaternionMMR = cuaternion => {
   const [w, x, y, z] = cuaternion
-  // return [-y, x, z, w]
   return [-y, x, z, w]
 }
 

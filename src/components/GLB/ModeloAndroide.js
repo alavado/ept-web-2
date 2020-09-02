@@ -2,7 +2,6 @@ import React, { useState, useRef, useMemo } from 'react'
 import { useLoader, useFrame, useThree, extend } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Matrix4 } from 'three'
-import { crearCuaternion, crearCuaternionTorso } from '../../helpers/rotaciones'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { useQuaternion } from '../../hooks/useQuaternion'
 
