@@ -2,10 +2,19 @@ import React, { useState } from 'react'
 import Webcam from 'react-webcam'
 import mutation from '../../../graphql/mutations/agregarPaciente'
 import './FormPaciente.css'
-import { useMutation } from '@apollo/react-hooks'
+import { gql, useMutation } from '@apollo/react-hooks'
+
+const UPLOAD = gql`
+  mutation($file: Upload!) {
+    upload(file: $file) {
+      id
+    }
+  }
+`;
 
 const FormPaciente = () => {
 
+  const webcamRef = React.useRef(null);
   const [variables, setVariables] = useState({
     nombres: '',
     apellidoPaterno: '',
@@ -17,11 +26,25 @@ const FormPaciente = () => {
   })
   const [mutate, { loading }] = useMutation(mutation)
 
+  const [upload] = useMutation(UPLOAD)
+  const [image, setImage] = useState(null)
+
   const cambiarVariable = (e, v) => setVariables({ ...variables, [v]: e.target.value })
 
   const enviarFormulario = e => {
     e.preventDefault()
-    mutate({variables})
+    console.log(image)
+    upload({
+      variables: {
+        file: image
+      },
+    })
+    // mutate({
+    //   variables: {
+    //     ...variables,
+    //     foto: webcamRef.current.getScreenshot()
+    //   }
+    // })
       .then(console.log)
       .catch(console.error)
   }
@@ -29,13 +52,20 @@ const FormPaciente = () => {
   return (
     <div className="FormPaciente">
       <h1 className="FormPaciente__titulo">Nuevo paciente</h1>
+      <input
+        type="file"
+        name="files"
+        onChange={e => setImage(e.target.files[0])}
+        alt="image"
+      />
       <div className="FormPaciente__avatar">
         <Webcam
           videoConstraints={{
             aspectRatio: 1,
             width: 200,
-            height: 200
+            height: 200,
           }}
+          ref={webcamRef}
         />
       </div>
       <form className="FormPaciente__formulario" onSubmit={enviarFormulario}>
