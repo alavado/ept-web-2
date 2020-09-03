@@ -114,6 +114,7 @@ const FormPaciente = () => {
           </label>
         </label>
         <label>
+          <label>Diagnóstico</label>
           <input
             type="text"
             onChange={e => cambiarVariable(e, 'diagnostico')}
