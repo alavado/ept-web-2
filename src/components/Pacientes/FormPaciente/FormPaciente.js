@@ -5,6 +5,8 @@ import uploadMutation from '../../../graphql/mutations/upload'
 import './FormPaciente.css'
 import { useMutation } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
+import { Icon, InlineIcon } from '@iconify/react'
+import IconoCamara from '@iconify/icons-ic/baseline-add-a-photo'
 
 const urltoFile = (url, filename, mimeType) => fetch(url)
   .then(res => res.arrayBuffer())
@@ -12,7 +14,9 @@ const urltoFile = (url, filename, mimeType) => fetch(url)
 
 const FormPaciente = () => {
 
-  const webcamRef = React.useRef(null);
+  const webcamRef = React.useRef(null)
+  const [tomandoFoto, setTomandoFoto] = useState(false)
+  const [foto, setFoto] = useState(null)
   const [variables, setVariables] = useState({
     nombres: '',
     apellidoPaterno: '',
@@ -31,9 +35,9 @@ const FormPaciente = () => {
   const enviarFormulario = async e => {
     e.preventDefault()
     try {
-      const file = await urltoFile(webcamRef.current.getScreenshot(), 'bla.jpg', 'image/jpg')
+      const file = await urltoFile(foto, 'foto_paciente.jpg', 'image/jpg')
       const { data: { upload: { id } } } = await upload({ variables: { file } })
-      const dataPaciente = await mutate({ variables: { ...variables, foto: id } })
+      await mutate({ variables: { ...variables, foto: id } })
       history.push('/pacientes')
     } catch(e) {
       console.error(e)
@@ -44,14 +48,50 @@ const FormPaciente = () => {
     <div className="FormPaciente">
       <h1 className="FormPaciente__titulo">Nuevo paciente</h1>
       <div className="FormPaciente__avatar">
-        <Webcam
-          videoConstraints={{
-            aspectRatio: 1,
-            width: 200,
-            height: 200,
-          }}
-          ref={webcamRef}
-        />
+        {tomandoFoto ?
+          <>
+            <div className="FormPaciente__contenedor_camara">
+              <Webcam
+                videoConstraints={{
+                  aspectRatio: 1,
+                  width: 160,
+                  height: 160,
+                }}
+                ref={webcamRef}
+              />
+            </div>
+            <button
+              className="FormPaciente__boton_tomar_foto"
+              onClick={() => {
+                setFoto(webcamRef.current.getScreenshot())
+                setTomandoFoto(false)
+              }}
+            >
+              <InlineIcon icon={IconoCamara} />
+            </button>
+          </> :
+          <div
+            className="FormPaciente__boton_agregar_foto"
+            onClick={() => setTomandoFoto(true)}
+          >
+            {foto ? 
+              <img
+                className="FormPaciente__foto"
+                src={foto}
+                alt="Foto paciente"
+              /> :
+              <>
+                <Icon
+                  className="FormPaciente__icono_agregar_foto"
+                  icon={IconoCamara}
+                />
+                <div className="FormPaciente__texto_agregar_foto">
+                  Agregar foto
+                </div>
+              </>
+            }
+          </div>
+        }
       </div>
       <form className="FormPaciente__formulario" onSubmit={enviarFormulario}>
         <label>
