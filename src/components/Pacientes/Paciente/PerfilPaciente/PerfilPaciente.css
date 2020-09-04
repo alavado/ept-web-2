@@ -1,0 +1,32 @@
+.PerfilPaciente {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+}
+
+.PerfilPaciente__superior {
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.PerfilPaciente__foto {
+  height: 120px;
+  width: 120px;
+  clip-path: circle(50% at 50% 50%);
+  margin-right: 1rem;
+}
+
+.PerfilPaciente__nombre {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: .5rem;
+  font-size: 1.15rem;
+}
+
+.PerfilPaciente__subtitulo {
+
+}

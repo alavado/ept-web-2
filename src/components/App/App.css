@@ -5,12 +5,14 @@
   background-color: white;
   color: #262626;
   font-family: 'Catamaran', sans-serif;
+  min-width: 100vw;
 }
 
 .App__contenedor {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
 
 button {
