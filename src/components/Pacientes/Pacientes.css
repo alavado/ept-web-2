@@ -1,4 +1,21 @@
 .Pacientes {
   display: flex;
   flex: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Pacientes__lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.Pacientes__boton_agregar {
+  bottom: 1rem;
+  right: 1rem;
+  position: absolute;
+  text-decoration: none;
+  background-color: #d6d6d6;
+  padding: 1rem;
+  color: black;
 }

@@ -23,7 +23,9 @@ const Pacientes = () => {
           />
         ))}
       </div>
-      <Link to="/pacientes/nuevo">Agregar paciente</Link>
+      <Link className="Pacientes__boton_agregar" to="/pacientes/nuevo">
+        Agregar paciente
+      </Link>
     </div>
   )
 }

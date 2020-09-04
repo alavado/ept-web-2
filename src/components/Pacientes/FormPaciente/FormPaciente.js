@@ -7,10 +7,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
 import { Icon, InlineIcon } from '@iconify/react'
 import IconoCamara from '@iconify/icons-ic/baseline-add-a-photo'
-
-const urltoFile = (url, filename, mimeType) => fetch(url)
-  .then(res => res.arrayBuffer())
-  .then(buf => new File([buf], filename, { type: mimeType }))
+import { urltoFile } from '../../../helpers/files'
 
 const FormPaciente = () => {
 
@@ -35,7 +32,7 @@ const FormPaciente = () => {
   const enviarFormulario = async e => {
     e.preventDefault()
     try {
-      const file = await urltoFile(foto, 'foto_paciente.jpg', 'image/jpg')
+      const file = await urltoFile(foto, 'foto_paciente.jpg', 'image/jpeg')
       const { data: { upload: { id } } } = await upload({ variables: { file } })
       await mutate({ variables: { ...variables, foto: id } })
       history.push('/pacientes')
@@ -46,7 +43,7 @@ const FormPaciente = () => {
 
   return (
     <div className="FormPaciente">
-      <h1 className="FormPaciente__titulo">Nuevo paciente</h1>
+      <h1 className="FormPaciente__titulo">Ingrese datos paciente</h1>
       <div className="FormPaciente__avatar">
         {tomandoFoto ?
           <>

@@ -7,6 +7,9 @@ const query = gql`
       nombres
       apellido_paterno
       apellido_materno
+      foto {
+        url
+      }
     }
   }
 `

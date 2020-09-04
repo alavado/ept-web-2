@@ -8,6 +8,7 @@ import Login from '../Login'
 import Conexion from '../Conexion'
 import Pacientes from '../Pacientes'
 import FormPaciente from '../Pacientes/FormPaciente'
+import Paciente from '../Pacientes/Paciente'
 
 const App = () => {
 
@@ -19,7 +20,7 @@ const App = () => {
           <Route exact path="/" component={Login} />
           <Route exact path="/pacientes" component={Pacientes} />
           <Route exact path="/pacientes/nuevo" component={FormPaciente} />
-          <Route exact path="/pacientes/:id" component={Pacientes} />
+          <Route exact path="/pacientes/:id" component={Paciente} />
           <Route path="/conexion" component={Conexion} />
           <Route path="/bla" component={() => <><IMUs /><GLB /></>} />
         </Switch>
