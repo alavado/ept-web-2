@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import Webcam from 'react-webcam'
 import mutation from '../../../graphql/mutations/agregarPaciente'
+import uploadMutation from '../../../graphql/mutations/upload'
 import './FormPaciente.css'
-import { gql, useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
+import { useHistory } from 'react-router-dom'
 
-const UPLOAD = gql`
-  mutation($file: Upload!) {
-    upload(file: $file) {
-      id
-    }
-  }
-`;
+const urltoFile = (url, filename, mimeType) => fetch(url)
+  .then(res => res.arrayBuffer())
+  .then(buf => new File([buf], filename, { type: mimeType }))
 
 const FormPaciente = () => {
 
@@ -25,39 +23,26 @@ const FormPaciente = () => {
     diagnostico: ''
   })
   const [mutate, { loading }] = useMutation(mutation)
-
-  const [upload] = useMutation(UPLOAD)
-  const [image, setImage] = useState(null)
+  const [upload, { loading: uploading }] = useMutation(uploadMutation)
+  const history = useHistory()
 
   const cambiarVariable = (e, v) => setVariables({ ...variables, [v]: e.target.value })
 
-  const enviarFormulario = e => {
+  const enviarFormulario = async e => {
     e.preventDefault()
-    console.log(image)
-    upload({
-      variables: {
-        file: image
-      },
-    })
-    // mutate({
-    //   variables: {
-    //     ...variables,
-    //     foto: webcamRef.current.getScreenshot()
-    //   }
-    // })
-      .then(console.log)
-      .catch(console.error)
+    try {
+      const file = await urltoFile(webcamRef.current.getScreenshot(), 'bla.jpg', 'image/jpg')
+      const { data: { upload: { id } } } = await upload({ variables: { file } })
+      const dataPaciente = await mutate({ variables: { ...variables, foto: id } })
+      history.push('/pacientes')
+    } catch(e) {
+      console.error(e)
+    }
   }
 
   return (
     <div className="FormPaciente">
       <h1 className="FormPaciente__titulo">Nuevo paciente</h1>
-      <input
-        type="file"
-        name="files"
-        onChange={e => setImage(e.target.files[0])}
-        alt="image"
-      />
       <div className="FormPaciente__avatar">
         <Webcam
           videoConstraints={{
