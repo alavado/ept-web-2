@@ -1,18 +1,14 @@
 import React, { useState } from 'react'
-import Webcam from 'react-webcam'
 import mutation from '../../../graphql/mutations/agregarPaciente'
 import uploadMutation from '../../../graphql/mutations/upload'
 import './FormPaciente.css'
 import { useMutation } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
-import { Icon, InlineIcon } from '@iconify/react'
-import IconoCamara from '@iconify/icons-ic/baseline-add-a-photo'
 import { urltoFile } from '../../../helpers/files'
+import Avatar from '../Avatar'
 
 const FormPaciente = () => {
 
-  const webcamRef = React.useRef(null)
-  const [tomandoFoto, setTomandoFoto] = useState(false)
   const [foto, setFoto] = useState(null)
   const [variables, setVariables] = useState({
     nombres: '',
@@ -24,7 +20,7 @@ const FormPaciente = () => {
     diagnostico: ''
   })
   const [mutate, { loading }] = useMutation(mutation)
-  const [upload, { loading: uploading }] = useMutation(uploadMutation)
+  const [upload] = useMutation(uploadMutation)
   const history = useHistory()
 
   const cambiarVariable = (e, v) => setVariables({ ...variables, [v]: e.target.value })
@@ -45,51 +41,7 @@ const FormPaciente = () => {
     <div className="FormPaciente">
       <h1 className="FormPaciente__titulo">Ingrese datos paciente</h1>
       <div className="FormPaciente__avatar">
-        {tomandoFoto ?
-          <>
-            <div className="FormPaciente__contenedor_camara">
-              <Webcam
-                videoConstraints={{
-                  aspectRatio: 1,
-                  width: 180,
-                  height: 180,
-                  facingMode: 'environment'
-                }}
-                ref={webcamRef}
-              />
-            </div>
-            <button
-              className="FormPaciente__boton_tomar_foto"
-              onClick={() => {
-                setFoto(webcamRef.current.getScreenshot())
-                setTomandoFoto(false)
-              }}
-            >
-              <InlineIcon icon={IconoCamara} />
-            </button>
-          </> :
-          <div
-            className="FormPaciente__boton_agregar_foto"
-            onClick={() => setTomandoFoto(true)}
-          >
-            {foto ? 
-              <img
-                className="FormPaciente__foto"
-                src={foto}
-                alt="Foto paciente"
-              /> :
-              <>
-                <Icon
-                  className="FormPaciente__icono_agregar_foto"
-                  icon={IconoCamara}
-                />
-                <div className="FormPaciente__texto_agregar_foto">
-                  Agregar foto
-                </div>
-              </>
-            }
-          </div>
-        }
+        <Avatar foto={foto} setFoto={setFoto} />
       </div>
       <form className="FormPaciente__formulario" onSubmit={enviarFormulario}>
         <label>

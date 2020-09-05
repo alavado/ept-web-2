@@ -3,11 +3,19 @@
   flex: 1;
   flex-direction: column;
   width: 100%;
+  align-items: center;
+}
+
+.Pacientes__titulo {
+  font-size: 1.25rem;
+  margin: 1rem 0 .5rem 0;
+  font-weight: 500;
 }
 
 .Pacientes__lista {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .Pacientes__boton_agregar {

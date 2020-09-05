@@ -1,5 +1,5 @@
 .FilaPaciente {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #efefef;
   display: flex;
   align-items: center;
   padding: .5rem 1rem;

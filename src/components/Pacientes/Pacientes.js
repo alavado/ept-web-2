@@ -15,6 +15,7 @@ const Pacientes = () => {
 
   return (
     <div className="Pacientes">
+      <h1 className="Pacientes__titulo">Seleccione paciente</h1>
       <div className="Pacientes__lista">
         {data.pacientes.map(paciente => (
           <FilaPaciente

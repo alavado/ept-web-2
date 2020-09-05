@@ -34,6 +34,10 @@ const PerfilPaciente = () => {
           <p className="PerfilPaciente__subtitulo">{subtitulo}</p>
         </div>
       </div>
+      <div className="PerfilPaciente__contenedor_diagnostico">
+        <h2 className="PerfilPaciente__titulo_diagnostico">Diagnóstico</h2>
+        <p className="PerfilPaciente__diagnostico">{diagnostico}</p>
+      </div>
     </div>
   )
 }
