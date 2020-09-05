@@ -1,0 +1,36 @@
+.Avatar {
+  position: relative;
+}
+
+.Avatar__contenedor_camara, 
+.Avatar__foto {
+  clip-path: circle(50% at 50% 50%);
+}
+
+.Avatar__boton_tomar_foto {
+  position: absolute;
+  bottom: 37.5%;
+  right: 0;
+  z-index: 2;
+  width: 25%;
+  height: 25%;
+  font-size: 1.5rem;
+  border-radius: 100%;
+  color: black;
+  background-color: rgba(255, 255, 255, .5);
+}
+
+.Avatar__boton_agregar_foto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Avatar__icono_agregar_foto {
+  font-size: 2.5rem;
+  margin-bottom: .25rem;
+}
+
+.Avatar__texto_agregar_foto {
+  margin-top: .25rem;
+}

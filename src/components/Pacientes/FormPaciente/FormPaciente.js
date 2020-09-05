@@ -40,8 +40,13 @@ const FormPaciente = () => {
   return (
     <div className="FormPaciente">
       <h1 className="FormPaciente__titulo">Ingrese datos paciente</h1>
-      <div className="FormPaciente__avatar">
-        <Avatar foto={foto} setFoto={setFoto} />
+      <div className="FormPaciente__contenedor_avatar">
+        <Avatar
+          foto={foto}
+          setFoto={setFoto}
+          alto={160}
+          ancho={160}
+        />
       </div>
       <form className="FormPaciente__formulario" onSubmit={enviarFormulario}>
         <label>
