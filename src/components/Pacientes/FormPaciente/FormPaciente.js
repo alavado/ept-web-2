@@ -32,10 +32,16 @@ const FormPaciente = () => {
       if (foto) {
         const file = await urltoFile(foto, 'foto_paciente.jpg', 'image/jpeg')
         const { data: { upload: { id } } } = await upload({ variables: { file } })
-        await mutate({ variables: { ...variables, foto: id }, refetchQueries: [{ query }] })
+        await mutate({
+          variables: { ...variables, foto: id },
+          refetchQueries: [{ query }]
+        })
       }
       else {
-        await mutate({ variables: { ...variables }, refetchQueries: [{ query }] })
+        await mutate({
+          variables: { ...variables },
+          refetchQueries: [{ query }]
+        })
       }
       history.push('/pacientes')
     } catch(e) {

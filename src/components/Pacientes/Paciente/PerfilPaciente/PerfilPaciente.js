@@ -1,20 +1,35 @@
 import React, { useState } from 'react'
 import query from '../../../../graphql/queries/paciente'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import './PerfilPaciente.css'
 import { urlArchivo, urlSinFoto } from '../../../../config/urls'
 import { formatearEdad, formatearSexo, formatearLateralidad } from '../../../../helpers/formato'
 import Avatar from '../../Avatar'
+import { urltoFile } from '../../../../helpers/files'
+import editarPacienteMutation from '../../../../graphql/mutations/editarPaciente'
+import uploadMutation from '../../../../graphql/mutations/upload'
 
 const PerfilPaciente = () => {
 
   const { id } = useParams()
   const { data, loading } = useQuery(query, { variables: { id } })
   const [foto, setFoto] = useState(data?.paciente.foto?.url)
+  const [mutate] = useMutation(editarPacienteMutation)
+  const [upload] = useMutation(uploadMutation)
 
   if (loading) {
     return null
+  }
+  const editarPaciente = async (variable, valor) => {
+    if (variable === 'foto') {
+      const file = await urltoFile(valor, 'foto_paciente.jpg', 'image/jpeg')
+      const { data: { upload: { id: idNuevaFoto } } } = await upload({ variables: { file } })
+      await mutate({
+        variables: { id, foto: idNuevaFoto },
+        refetchQueries: [{ query, variables: { id } }]
+      })
+    }
   }
 
   const { paciente: {
@@ -23,17 +38,13 @@ const PerfilPaciente = () => {
   const nombre = `${nombres} ${apellido_paterno} ${apellido_materno}`
   const subtitulo = `${formatearSexo(sexo)}, ${formatearLateralidad(lateralidad, sexo)}, ${formatearEdad(fecha_nacimiento)}`
 
-  const editarPaciente = (variable, valor) => {
-    
-  }
-
   return (
     <div className="PerfilPaciente">
       <div className="PerfilPaciente__superior">
         <div className="PerfilPaciente__foto">
           <Avatar
             foto={data?.paciente.foto ? urlArchivo(data.paciente.foto.url) : urlSinFoto}
-            setFoto={setFoto}
+            setFoto={foto => editarPaciente('foto', foto)}
             alto={120}
             ancho={120}
           />
