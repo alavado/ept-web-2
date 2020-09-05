@@ -51,8 +51,9 @@ const FormPaciente = () => {
               <Webcam
                 videoConstraints={{
                   aspectRatio: 1,
-                  width: 480,
-                  height: 480,
+                  width: 180,
+                  height: 180,
+                  facingMode: 'environment'
                 }}
                 ref={webcamRef}
               />
