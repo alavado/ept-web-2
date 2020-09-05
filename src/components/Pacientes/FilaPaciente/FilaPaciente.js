@@ -1,6 +1,6 @@
 import React from 'react'
 import './FilaPaciente.css'
-import { urlArchivo } from '../../../config/urls'
+import { urlArchivo, urlSinFoto } from '../../../config/urls'
 import { useHistory } from 'react-router-dom'
 
 const FilaPaciente = ({ paciente }) => {
@@ -16,7 +16,7 @@ const FilaPaciente = ({ paciente }) => {
       <img
         className="FilaPaciente__avatar"
         alt={`Foto Paciente ${nombreCompleto}`}
-        src={paciente.foto ? urlArchivo(paciente.foto.url) : ''}
+        src={paciente.foto ? urlArchivo(paciente.foto.url) : urlSinFoto}
       />
       {nombreCompleto}
     </div>

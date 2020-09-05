@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import mutation from '../../../graphql/mutations/agregarPaciente'
 import uploadMutation from '../../../graphql/mutations/upload'
+import query from '../../../graphql/queries/pacientes'
 import './FormPaciente.css'
 import { useMutation } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
@@ -28,9 +29,14 @@ const FormPaciente = () => {
   const enviarFormulario = async e => {
     e.preventDefault()
     try {
-      const file = await urltoFile(foto, 'foto_paciente.jpg', 'image/jpeg')
-      const { data: { upload: { id } } } = await upload({ variables: { file } })
-      await mutate({ variables: { ...variables, foto: id } })
+      if (foto) {
+        const file = await urltoFile(foto, 'foto_paciente.jpg', 'image/jpeg')
+        const { data: { upload: { id } } } = await upload({ variables: { file } })
+        await mutate({ variables: { ...variables, foto: id }, refetchQueries: [{ query }] })
+      }
+      else {
+        await mutate({ variables: { ...variables }, refetchQueries: [{ query }] })
+      }
       history.push('/pacientes')
     } catch(e) {
       console.error(e)
