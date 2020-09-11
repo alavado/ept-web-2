@@ -3,7 +3,6 @@
   flex: 1;
   flex-direction: column;
   width: 100%;
-  align-items: center;
 }
 
 .Pacientes__titulo {
@@ -16,6 +15,13 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.Pacientes__superior {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 1rem;
 }
 
 .Pacientes__boton_agregar {

@@ -1,13 +1,14 @@
 import React from 'react'
 import query from '../../graphql/queries/pacientes'
 import { useQuery } from '@apollo/react-hooks'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import FilaPaciente from './FilaPaciente'
 import './Pacientes.css'
 
 const Pacientes = () => {
 
   const { data, loading, error } = useQuery(query)
+  const history = useHistory()
 
   if (loading || error) {
     return null
@@ -15,7 +16,10 @@ const Pacientes = () => {
 
   return (
     <div className="Pacientes">
-      <h1 className="Pacientes__titulo">Seleccione paciente</h1>
+      <div className="Pacientes__superior">
+        <h1 className="Pacientes__titulo">Seleccione paciente</h1>
+        <button onClick={() => history.push('/pacientes/nuevo')}>Agregar paciente</button>
+      </div>
       <div className="Pacientes__lista">
         {data.pacientes.map(paciente => (
           <FilaPaciente
@@ -24,9 +28,6 @@ const Pacientes = () => {
           />
         ))}
       </div>
-      <Link className="Pacientes__boton_agregar" to="/pacientes/nuevo">
-        Agregar paciente
-      </Link>
     </div>
   )
 }

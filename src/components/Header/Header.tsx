@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.css'
 
-const titulo: string = 'EPT ACHS'
+const titulo: string = 'Mediciones ACHS'
 
 const Header = (): JSX.Element => {
   return (

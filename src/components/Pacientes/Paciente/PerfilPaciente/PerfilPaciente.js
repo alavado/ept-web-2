@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import query from '../../../../graphql/queries/paciente'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
@@ -9,14 +9,15 @@ import Avatar from '../../Avatar'
 import { urltoFile } from '../../../../helpers/files'
 import editarPacienteMutation from '../../../../graphql/mutations/editarPaciente'
 import uploadMutation from '../../../../graphql/mutations/upload'
+import { useHistory } from 'react-router-dom'
 
 const PerfilPaciente = () => {
 
   const { id } = useParams()
   const { data, loading } = useQuery(query, { variables: { id } })
-  const [foto, setFoto] = useState(data?.paciente.foto?.url)
   const [mutate] = useMutation(editarPacienteMutation)
   const [upload] = useMutation(uploadMutation)
+  const history = useHistory()
 
   if (loading) {
     return null
@@ -52,6 +53,12 @@ const PerfilPaciente = () => {
         <div className="PerfilPaciente__datos">
           <h2 className="PerfilPaciente__nombre">{nombre}</h2>
           <p className="PerfilPaciente__subtitulo">{subtitulo}</p>
+          <button
+            className="PerfilPaciente__boton_agregar_hito"
+            onClick={() => history.push(`/pacientes/${id}/agregar_registro`)}
+          >
+            Agregar registro
+          </button>
         </div>
       </div>
       <div className="PerfilPaciente__contenedor_diagnostico">

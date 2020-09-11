@@ -16,5 +16,10 @@
 }
 
 button {
+  padding: .35rem 1rem;
+  background-color: seagreen;
+  color: white;
+  border-radius: 1rem;
   border: none;
+  font-size: .8rem;
 }
