@@ -10,16 +10,12 @@ const NuevoRegistro = () => {
   const opciones = [
     {
       nombre: 'Evaluación kinesiológica',
-      href: '/'
+      href: `/pacientes/${id}/agregar_registro/kine`
     },
     {
       nombre: 'EPT',
-      href: '/'
-    },
-    {
-      nombre: 'Observación',
-      href: `/pacientes/${id}/agregar_registro/observacion`
-    },
+      href: `/pacientes/${id}/agregar_registro/ept`
+    }
   ]
 
   return (
