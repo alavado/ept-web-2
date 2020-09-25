@@ -9,7 +9,7 @@ extend({ OrbitControls })
 
 export default function ModeloAndroide({ cuaternionTorso, cuaternionBrazo, cuaternionAntebrazo, cuaternionMano }) {
   const group = useRef()
-  const gltf = useLoader(GLTFLoader, 'modelos/androide.glb')
+  const gltf = useLoader(GLTFLoader, '/modelos/androide.glb')
   const [torso, setTorso] = useState(undefined)
   const [brazo, setBrazo] = useState(undefined)
   const [antebrazo, setAntebrazo] = useState(undefined)
