@@ -1,15 +1,29 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import GLB from '../../GLB'
 import IMUs from '../../IMUs'
 import './RegistroEPT.css'
+import Webcam from 'react-webcam'
 
 const RegistroEPT = () => {
+  
+  const webcamRef = React.useRef(null)
+
   return (
     <div className="RegistroEPT">
-      3D
       <div className="RegistroEPT__3d">
-        <GLB />
         {/* <IMUs /> */}
+        <GLB />
+        <div className="RegistroEPT__camara">
+          <Webcam
+            videoConstraints={{
+              aspectRatio: 1,
+              width: 150,
+              height: 200,
+              facingMode: 'environment'
+            }}
+            ref={webcamRef}
+          />
+        </div>
       </div>
     </div>
   )

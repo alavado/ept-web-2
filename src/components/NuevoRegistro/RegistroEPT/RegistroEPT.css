@@ -9,3 +9,10 @@
   display: flex;
   flex: 1;
 }
+
+.RegistroEPT__camara {
+  position: absolute;
+  z-index: 2;
+  top: 4rem;
+  right: 1rem;
+}

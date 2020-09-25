@@ -15,7 +15,7 @@ const IMUs = () => {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className="IMUs">
       {imus.map((imu, i) => (
         <div
           style={{ margin: '1.5em' }}
