@@ -1,0 +1,17 @@
+.BotonesEPT {
+  position: absolute;
+  z-index: 2;
+  top: 1rem;
+  right: 1rem;
+}
+
+.BotonesEPT__boton {
+  font-size: 1rem;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: .15rem .15rem .25rem rgba(0, 0, 0, .15);
+}

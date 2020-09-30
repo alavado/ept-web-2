@@ -19,7 +19,7 @@ const GLB = () => {
   }
 
   return (
-    <div style={{ width: 150, height: 180, backgroundColor: 'white' }}>
+    <div style={{ width: 150, height: 150, backgroundColor: 'white' }}>
       <Canvas>
         <ambientLight intensity={.95} />
         <directionalLight position={[10, 0, 0]} power={.5}  />
