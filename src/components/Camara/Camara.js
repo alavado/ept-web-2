@@ -10,7 +10,7 @@ const Camara = props => {
     <div className="Camara">
       <Webcam
         videoConstraints={{
-          aspectRatio: 1,
+          aspectRatio: (window.screen.width / (window.screen.height - 55)),
           width: window.screen.width,
           height: window.screen.height - 55,
           facingMode: 'environment'
