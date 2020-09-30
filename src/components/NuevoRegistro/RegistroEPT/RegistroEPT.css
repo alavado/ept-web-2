@@ -1,18 +1,43 @@
 .RegistroEPT {
   flex: 1;
-  background-color: red;
   display: flex;
 }
 
 .RegistroEPT__3d {
-  background-color: gray;
   display: flex;
-  flex: 1;
+  flex-direction: column;
+  position: absolute;
+  z-index: 2;
+  bottom: 1rem;
+  left: 1rem;
+  border: 1px solid #212121;
+  box-shadow: .25rem .25rem .25rem rgba(0, 0, 0, .25);
+  display: none;
 }
 
 .RegistroEPT__camara {
+  box-shadow: .25rem .25rem .25rem rgba(0, 0, 0, .25);
+}
+
+.RegistroEPT__camara__titulo {
+  color: white;
+  background-color: #007934;
+  padding: .5rem;
+}
+
+.RegistroEPT__3d_titulo {
+  color: white;
+  background-color: #007934;
+  padding: .5rem;
+}
+
+.RegistroEPT__UI {
   position: absolute;
   z-index: 2;
-  top: 4rem;
+  bottom: 1rem;
   right: 1rem;
+}
+
+.RegistroEPT__3d--activo {
+  display: flex;
 }
