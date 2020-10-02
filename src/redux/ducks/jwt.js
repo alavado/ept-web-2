@@ -5,8 +5,8 @@ const limpiarToken = 'jwt/limpiarToken'
 const guardarUsuario = 'jwt/guardarUsuario'
 
 const defaultState = {
-  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTU5OTA2NDY5MSwiZXhwIjoxNjAxNjU2NjkxfQ.Tljy9j0xAQl_kAA0gDp0EbJQXQ77ishGS5r1pkCXrb4',
-  id: decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTU5OTA2NDY5MSwiZXhwIjoxNjAxNjU2NjkxfQ.Tljy9j0xAQl_kAA0gDp0EbJQXQ77ishGS5r1pkCXrb4').id
+  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYwMTY2MjQ3NiwiZXhwIjoxNjA0MjU0NDc2fQ.soqOAbToCbxcut_0GVmgynmFyGLcfgw9yJA1Mh7RF9k',
+  id: decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYwMTY2MjQ3NiwiZXhwIjoxNjA0MjU0NDc2fQ.soqOAbToCbxcut_0GVmgynmFyGLcfgw9yJA1Mh7RF9k').id
 }
 
 export default function reducer(state = defaultState, action = {}) {

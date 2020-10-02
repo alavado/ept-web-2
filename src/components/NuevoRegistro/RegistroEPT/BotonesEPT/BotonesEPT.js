@@ -18,7 +18,7 @@ const BotonesEPT = () => {
       </button>
       <button
         className="BotonesEPT__boton"
-        onClick={() => dispatch((fijarCero()))}
+        onClick={() => dispatch(fijarCero())}
       >
         R
       </button>
