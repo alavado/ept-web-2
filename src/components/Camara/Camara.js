@@ -3,6 +3,8 @@ import Webcam from 'react-webcam'
 import { esAndroid } from '../../helpers/devices'
 import Icon from '@iconify/react'
 import videoIcon from '@iconify/icons-mdi/video'
+import stopIcon from '@iconify/icons-mdi/stop'
+import classNames from 'classnames'
 import './Camara.css'
 
 const Camara = props => {
@@ -38,22 +40,16 @@ const Camara = props => {
     setGrabando(false)
   }, [mediaRecorderRef, setGrabando])
 
-  const handleDownload = React.useCallback(() => {
+  const handleDownload = useCallback(() => {
     if (grabacion.length) {
       const blob = new Blob(grabacion, {
         type: "video/webm"
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style = "display: none";
-      a.href = url;
-      a.download = "react-webcam-stream-capture.webm";
-      a.click();
-      window.URL.revokeObjectURL(url);
-      setGrabacion([]);
+      })
+      const url = URL.createObjectURL(blob)
+      window.URL.revokeObjectURL(url)
+      setGrabacion([])
     }
-  }, [grabacion]);
+  }, [grabacion])
 
   const { width, height } = window.screen
 
@@ -61,7 +57,7 @@ const Camara = props => {
     <div className="Camara">
       <Webcam
         videoConstraints={{
-          aspectRatio: esAndroid ? (height / (width - 55)) : (width / (height - 55)),
+          aspectRatio: esAndroid() ? (height / (width - 55)) : (width / (height - 55)),
           height: esAndroid() ? width : (height - 55),
           width: esAndroid() ? (height - 55) : width,
           facingMode: 'environment'
@@ -70,8 +66,14 @@ const Camara = props => {
       />
       {props.children}
       <div className="Camara__inferior">
-        <button onClick={() => grabando ? detenerGrabacion() : grabar()} className="Camara__boton_grabar">
-          <Icon icon={videoIcon} style={{ color: grabando ? 'red' : 'white' }} />
+        <button
+          onClick={() => grabando ? detenerGrabacion() : grabar()}
+          className={classNames({
+            'Camara__boton_grabar': true,
+            'Camara__boton_grabar--activo': grabando
+          })}
+        >
+          <Icon icon={grabando ? stopIcon : videoIcon} />
         </button>
         {grabacion.length > 0 && (
           <button onClick={handleDownload}>Download</button>
