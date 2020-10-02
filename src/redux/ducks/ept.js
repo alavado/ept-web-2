@@ -1,7 +1,7 @@
 const mostrar3D = 'ept/mostrar3D'
 
 const defaultState = {
-  mostrar3D: false
+  mostrar3D: true
 }
 
 export default function reducer(state = defaultState, action) {

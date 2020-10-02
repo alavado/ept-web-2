@@ -1,0 +1,1 @@
+export const esAndroid = () => navigator.userAgent.toLowerCase().indexOf("android") >= 0
