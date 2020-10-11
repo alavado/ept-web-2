@@ -6,11 +6,18 @@ import videoIcon from '@iconify/icons-mdi/video'
 import stopIcon from '@iconify/icons-mdi/stop'
 import classNames from 'classnames'
 import './Camara.css'
+import { useMutation } from '@apollo/client'
+import uploadMutation from '../../graphql/mutations/upload'
+import agregarEPTMutation from '../../graphql/mutations/agregarEPT'
+import { useSelector } from 'react-redux'
 
 const Camara = props => {
 
+  const { id: paciente } = useSelector(state => state.jwt)
   const [grabando, setGrabando] = useState(false)
   const [grabacion, setGrabacion] = useState([])
+  const [upload] = useMutation(uploadMutation)
+  const [agregarEPT] = useMutation(agregarEPTMutation)
   const webcamRef = useRef(null)
   const mediaRecorderRef = useRef(null)
 
@@ -40,16 +47,17 @@ const Camara = props => {
     setGrabando(false)
   }, [mediaRecorderRef, setGrabando])
 
-  const handleDownload = useCallback(() => {
+  const handleDownload = useCallback(async () => {
     if (grabacion.length) {
-      const blob = new Blob(grabacion, {
-        type: "video/webm"
-      })
-      const url = URL.createObjectURL(blob)
-      window.URL.revokeObjectURL(url)
-      setGrabacion([])
+      const file = new Blob(grabacion, { type: "video/webm" })
+      try {
+        const { data: { upload: { id: video } } } = await upload({ variables: { file } })
+        agregarEPT({ variables: { paciente, video } })
+      } catch (e) {
+        console.log(e)
+      }
     }
-  }, [grabacion])
+  }, [grabacion, upload])
 
   const { width, height } = window.screen
 
