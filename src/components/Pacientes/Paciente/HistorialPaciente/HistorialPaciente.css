@@ -1,0 +1,12 @@
+.HistorialPaciente {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.HistorialPaciente__titulo {
+  text-transform: uppercase;
+  font-size: .85rem;
+  margin-bottom: .25rem;
+  text-align: center;
+}

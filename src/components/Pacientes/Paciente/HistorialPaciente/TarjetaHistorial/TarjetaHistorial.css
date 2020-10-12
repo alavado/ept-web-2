@@ -1,0 +1,30 @@
+.TarjetaHistorial {
+  border-radius: .25rem;
+  background-color: white;
+  padding: 1.5rem 1rem;
+  margin: .5rem 2rem;
+  border: 1px solid #efefef;
+  box-shadow: 0 .1rem .25rem rgba(0, 0, 0, .15);
+  display: flex;
+  align-items: center;
+}
+
+.TarjetaHistorial__icono {
+  margin-right: 1rem;
+  font-size: 1.75rem;
+  color: #007934;
+}
+
+.TarjetaHistorial__contenedor_derecha {
+  display: flex;
+  flex-direction: column;
+}
+
+.TarjetaHistorial__actividad {
+  font-weight: 500;
+  margin-bottom: .25rem;
+}
+
+.TarjetaHistorial__fecha {
+  opacity: .75;
+}
