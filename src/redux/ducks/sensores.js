@@ -3,10 +3,17 @@ import { Quaternion } from 'three'
 
 const actualizar = 'sensores/actualizar'
 const calibrar = 'sensores/calibrar'
+const grabar = 'sensores/grabar'
+const deternerGrabacion = 'sensores/deternerGrabacion'
 
 const articulaciones = ['tronco', 'hombro', 'codo', 'muñeca']
 
-export default function reducer(state = {}, action = {}) {
+const defaultState = {
+  grabando: false,
+  grabacion: []
+}
+
+export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
     case actualizar:
       const datosOriginales = action.payload
@@ -44,12 +51,35 @@ export default function reducer(state = {}, action = {}) {
         datosOriginales,
         imus,
         emgs,
-        rotacionesCero: (state.rotacionesCero && state.rotacionesCero.length === imus.length && state.rotacionesCero) || imus.map(() => Quaternion.ONE)
+        rotacionesCero: (state.rotacionesCero && state.rotacionesCero.length === imus.length && state.rotacionesCero) || imus.map(() => Quaternion.ONE),
+        grabacion: state.grabando ? [
+          ...state.grabacion,
+          {
+            t: Date.now(),
+            datos: imus.map(({ segmento, angulosRelativos }) => ({
+              segmento,
+              angulos: [...angulosRelativos.map(a => Math.round(a * 100) / 100.0)]
+            }))
+          }
+        ] : state.grabacion
       }
     case calibrar: {
       return {
         ...state,
         rotacionesCero: state.imus.map(imu => imu.cuaternion)
+      }
+    }
+    case grabar: {
+      return {
+        ...state,
+        grabacion: [],
+        grabando: true
+      }
+    }
+    case deternerGrabacion: {
+      return {
+        ...state,
+        grabando: false
       }
     }
     default: {
@@ -65,3 +95,11 @@ export function actualizarMediciones(msg) {
 export const fijarCero = () => {
   return { type: calibrar }
 }
+
+export const graba = () => ({
+  type: grabar
+})
+
+export const dejaDeGrabar = () => ({
+  type: deternerGrabacion
+})

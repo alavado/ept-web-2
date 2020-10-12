@@ -65,6 +65,7 @@ const PerfilPaciente = () => {
         <h2 className="PerfilPaciente__titulo_diagnostico">Diagnóstico</h2>
         <p className="PerfilPaciente__diagnostico">{diagnostico}</p>
       </div>
+      
     </div>
   )
 }

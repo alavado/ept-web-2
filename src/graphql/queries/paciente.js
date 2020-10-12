@@ -14,6 +14,14 @@ const query = gql`
       foto {
         url
       }
+      registro_epts {
+        id
+        createdAt
+        video {
+          previewUrl
+          url
+        }
+      }
     }
   }
 `
