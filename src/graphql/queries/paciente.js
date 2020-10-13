@@ -17,10 +17,6 @@ const query = gql`
       registro_epts {
         id
         createdAt
-        video {
-          previewUrl
-          url
-        }
       }
     }
   }

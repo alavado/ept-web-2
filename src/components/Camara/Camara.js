@@ -11,7 +11,7 @@ import uploadMutation from '../../graphql/mutations/upload'
 import agregarEPTMutation from '../../graphql/mutations/agregarEPT'
 import { useSelector, useDispatch } from 'react-redux'
 import { graba, dejaDeGrabar } from '../../redux/ducks/sensores'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 const Camara = props => {
 
@@ -23,6 +23,7 @@ const Camara = props => {
   const webcamRef = useRef(null)
   const mediaRecorderRef = useRef(null)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleDataAvailable = useCallback(
     ({ data }) => {
@@ -55,7 +56,8 @@ const Camara = props => {
       const file = new Blob(grabacion, { type: "video/webm" })
       try {
         const { data: { upload: { id: video } } } = await upload({ variables: { file } })
-        agregarEPT({ variables: { paciente, video, datosIMU: grabacionIMU } })
+        await agregarEPT({ variables: { paciente, video, datosIMU: grabacionIMU } })
+        history.go(-2)
       } catch (e) {
         console.log(e)
       }

@@ -13,6 +13,7 @@ import NuevoRegistro from '../NuevoRegistro'
 import RegistroObservacion from '../NuevoRegistro/RegistroObservacion'
 import RegistroEPT from '../NuevoRegistro/RegistroEPT'
 import RegistroKine from '../NuevoRegistro/RegistroKine'
+import VisorEPT from '../Pacientes/Paciente/VisorEPT'
 
 const App = () => {
 
@@ -29,6 +30,7 @@ const App = () => {
           <Route exact path="/pacientes/:id/agregar_registro/observacion" component={RegistroObservacion} />
           <Route exact path="/pacientes/:id/agregar_registro/ept" component={RegistroEPT} />
           <Route exact path="/pacientes/:id/agregar_registro/kine" component={RegistroKine} />
+          <Route exact path="/ept/:id" component={VisorEPT} />
           <Route path="/conexion" component={Conexion} />
           <Route path="/bla" component={() => <><IMUs /><GLB /></>} />
         </Switch>
