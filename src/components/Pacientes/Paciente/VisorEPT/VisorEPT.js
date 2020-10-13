@@ -7,13 +7,21 @@ import './VisorEPT.css'
 const VisorEPT = () => {
 
   const { id } = useParams()
-  const { data } = useQuery(query, { variables: { id }})
+  const { data, loading } = useQuery(query, { variables: { id }})
+
+  if (loading) {
+    return null
+  }
 
   console.log(data)
 
   return (
     <div className="VisorEPT">
-      VisorEPT
+      <video
+        src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
+        controls={true}
+        className="VisorEPT__video"
+      />
     </div>
   )
 }

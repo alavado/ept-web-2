@@ -1,0 +1,9 @@
+.VisorEPT {
+  display: flex;
+  flex-direction: column;
+}
+
+.VisorEPT__video {
+  width: 100%;
+  padding: 1rem;
+}

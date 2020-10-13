@@ -17,11 +17,14 @@ const HistorialPaciente = () => {
   return (
     <div className="HistorialPaciente">
       <h2 className="HistorialPaciente__titulo">Historial</h2>
-      {data.paciente.registro_epts.map(registro => (
-        <TarjetaHistorial
-          key={`tarjeta-historial-${registro.id}`}
-          registro={registro}
-        />
+      {data.paciente.registro_epts
+        .slice()
+        .sort((r1, r2) => r1.createdAt > r2.createdAt ? -1 : 1)
+        .map(registro => (
+          <TarjetaHistorial
+            key={`tarjeta-historial-${registro.id}`}
+            registro={registro}
+          />
       ))}
     </div>
   )
