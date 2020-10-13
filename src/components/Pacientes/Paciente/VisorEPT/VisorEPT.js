@@ -1,20 +1,26 @@
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import React from 'react'
 import query from '../../../../graphql/queries/ept'
 import { useParams } from 'react-router-dom'
 import './VisorEPT.css'
+import GraficoTemporal from './GraficoTemporal'
 
 const VisorEPT = () => {
 
   const { id } = useParams()
   const { data, loading } = useQuery(query, { variables: { id }})
-
+  const [articulacion, setArticulacion] = useState()
+  
   if (loading) {
     return null
   }
 
-  console.log(data)
-
+  const articulaciones = data.registroEpt.datos_imu[0].datos.map(d => d.segmento)
+  const datosGrafico = articulacion && data.registroEpt.datos_imu.map(d => ({
+    v: d.datos.find(art => art.segmento === articulacion).angulos,
+    t: d.t
+  }))
+  
   return (
     <div className="VisorEPT">
       <video
@@ -22,6 +28,16 @@ const VisorEPT = () => {
         controls={true}
         className="VisorEPT__video"
       />
+      <select
+        onChange={e => setArticulacion(e.target.value)}
+      >
+        {articulaciones.map(a => (
+          <option key={`option-${a}`} value={a}>{a}</option>
+        ))}
+      </select>
+      <div className="VisorEPT__graficos">
+        <GraficoTemporal datos={datosGrafico} />
+      </div>
     </div>
   )
 }

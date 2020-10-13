@@ -12,6 +12,7 @@ import agregarEPTMutation from '../../graphql/mutations/agregarEPT'
 import { useSelector, useDispatch } from 'react-redux'
 import { graba, dejaDeGrabar } from '../../redux/ducks/sensores'
 import { useParams, useHistory } from 'react-router-dom'
+import queryPaciente from '../../graphql/queries/paciente'
 
 const Camara = props => {
 
@@ -24,6 +25,7 @@ const Camara = props => {
   const mediaRecorderRef = useRef(null)
   const dispatch = useDispatch()
   const history = useHistory()
+  const [subiendo, setSubiendo] = useState(false)
 
   const handleDataAvailable = useCallback(
     ({ data }) => {
@@ -52,17 +54,28 @@ const Camara = props => {
   }, [mediaRecorderRef, dispatch])
 
   const subirEjercicio = useCallback(async () => {
+    if (subiendo) {
+      return
+    }
     if (grabacion.length) {
+      setSubiendo(true)
       const file = new Blob(grabacion, { type: "video/webm" })
       try {
         const { data: { upload: { id: video } } } = await upload({ variables: { file } })
-        await agregarEPT({ variables: { paciente, video, datosIMU: grabacionIMU } })
+        await agregarEPT({
+          variables: { paciente, video, datosIMU: grabacionIMU },
+          refetchQueries: [{
+            query: queryPaciente,
+            variables: { id: paciente }
+          }]
+        })
         history.go(-2)
       } catch (e) {
         console.log(e)
+        setSubiendo(false)
       }
     }
-  }, [grabacion, upload, agregarEPT, paciente, grabacionIMU])
+  }, [grabacion, upload, agregarEPT, paciente, grabacionIMU, subiendo, history])
 
   const { width, height } = window.screen
 
@@ -79,6 +92,9 @@ const Camara = props => {
       />
       {props.children}
       <div className="Camara__inferior">
+        {grabacion.length > 0 ? (
+          <button onClick={subirEjercicio}>{subiendo ? 'Subiendo...' : 'Subir'}</button>
+        ) :
         <button
           onClick={() => grabando ? detenerGrabacion() : grabar()}
           className={classNames({
@@ -88,9 +104,7 @@ const Camara = props => {
         >
           <Icon icon={grabando ? stopIcon : videoIcon} />
         </button>
-        {grabacion.length > 0 && (
-          <button onClick={subirEjercicio}>Download</button>
-        )}
+        }
       </div>
     </div>
   )

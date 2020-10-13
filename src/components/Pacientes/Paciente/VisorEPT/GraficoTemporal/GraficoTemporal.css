@@ -1,0 +1,8 @@
+.GraficoTemporal {
+  display: flex;
+  flex-direction: column;
+}
+
+.GraficoTemporal__contenedor_grafico {
+  padding: .5rem
+}
