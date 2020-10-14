@@ -1,9 +1,24 @@
 .VisorEPT {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .VisorEPT__video {
-  width: 100%;
   padding: 1rem;
+  max-width: 100%;
+}
+
+.VisorEPT__contenedor_izquierda {
+  flex: 1;
+}
+
+.VisorEPT__contenedor_derecha {
+  flex: 1;
+}
+
+@media (orientation: landscape) {
+  .VisorEPT {
+    flex-direction: row;
+  }
 }

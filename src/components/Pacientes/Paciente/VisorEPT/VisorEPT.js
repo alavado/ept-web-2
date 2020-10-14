@@ -23,20 +23,24 @@ const VisorEPT = () => {
   
   return (
     <div className="VisorEPT">
-      <video
-        src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
-        controls={true}
-        className="VisorEPT__video"
-      />
-      <select
-        onChange={e => setArticulacion(e.target.value)}
-      >
-        {articulaciones.map(a => (
-          <option key={`option-${a}`} value={a}>{a}</option>
-        ))}
-      </select>
-      <div className="VisorEPT__graficos">
-        <GraficoTemporal datos={datosGrafico} />
+      <div className="VisorEPT__contenedor_izquierda">
+        <video
+          src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
+          controls={true}
+          className="VisorEPT__video"
+        />
+      </div>
+      <div className="VisorEPT__contenedor_derecha">
+        <select
+          onChange={e => setArticulacion(e.target.value)}
+        >
+          {articulaciones.map(a => (
+            <option key={`option-${a}`} value={a}>{a}</option>
+          ))}
+        </select>
+        <div className="VisorEPT__graficos">
+          <GraficoTemporal datos={datosGrafico} />
+        </div>
       </div>
     </div>
   )

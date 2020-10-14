@@ -15,7 +15,7 @@ const GraficoTemporal = ({ datos }) => {
   ), [[], [], []])
   const tiempos = datos.map(d => d.t)
   const labels = ['eje x', 'eje y', 'eje z']
-  const colores = ['red', 'green', 'blue']
+  const colores = ['#C40F00', '#007934', '#4D0C78']
 
   return (
     <div className="GraficoTemporal">
@@ -30,7 +30,9 @@ const GraficoTemporal = ({ datos }) => {
               datasets: [{
                 data: serie,
                 label: labels[i],
-                borderColor: colores[i]
+                borderColor: colores[i],
+                fill: false,
+                pointRadius: 0
               }]
             }}
             options={{
@@ -38,7 +40,10 @@ const GraficoTemporal = ({ datos }) => {
               scales: {
                 xAxes: [{
                   ticks: {
-                    callback: item => 'a'
+                    callback: item => ''
+                  },
+                  gridLines: {
+                    display: false
                   }
                 }]
               }
