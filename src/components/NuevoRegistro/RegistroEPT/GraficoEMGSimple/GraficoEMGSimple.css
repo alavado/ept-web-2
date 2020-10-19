@@ -1,0 +1,23 @@
+.GraficoEMGSimple {
+  position: absolute;
+  background-color: white;
+  color: black;
+  z-index: 5;
+  top: 20rem;
+  left: 10rem;
+  border: 1px solid #212121;
+  box-shadow: .25rem .25rem .25rem rgba(0, 0, 0, .25);
+}
+
+.GraficoEMGSimple_titulo {
+  color: white;
+  background-color: #007934;
+  padding: .5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.GraficoEMGSimple__contenedor_grafico {
+  background-color: white;
+  padding: .5rem;
+}

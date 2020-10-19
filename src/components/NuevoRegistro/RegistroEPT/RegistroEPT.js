@@ -3,6 +3,7 @@ import './RegistroEPT.css'
 import BotonesEPT from './BotonesEPT'
 import Camara from '../../Camara'
 import Vista3D from '../Vista3D'
+import GraficoEMGSimple from './GraficoEMGSimple'
 
 const RegistroEPT = () => {
   
@@ -11,6 +12,7 @@ const RegistroEPT = () => {
       <Camara>
         <BotonesEPT />
         <Vista3D />
+        <GraficoEMGSimple />
       </Camara>
     </div>
   )

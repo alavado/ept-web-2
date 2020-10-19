@@ -10,7 +10,11 @@ const articulaciones = ['tronco', 'hombro', 'codo', 'muñeca']
 
 const defaultState = {
   grabando: false,
-  grabacion: []
+  grabacion: [],
+  historial: {
+    emgs: [],
+    imus: []
+  }
 }
 
 export default function reducer(state = defaultState, action = {}) {
@@ -41,16 +45,24 @@ export default function reducer(state = defaultState, action = {}) {
       }
       let emgs = []
       if (datosOriginales && datosOriginales.e) {
-        emgs = datosOriginales.e.v.reduce((prev, valor) => {
+        emgs = datosOriginales.e.v.slice(1).reduce((prev, valor) => {
           const lecturas = valor.split(',').map(Number)
           return prev.map((emg, i) => ({ ...emg, valores: [...emg.valores, lecturas[i]] }))
         }, datosOriginales.e.v[0].split(',').map((v, i) => ({ id: `EMG ${i + 1}`, valores: [Number(v)] })))
+      }
+      const historial = {
+        ...state.historial,
+        emgs: emgs.map(({ id, valores }) => ({
+          id,
+          valores: [...(state.historial.emgs.find(e => e.id === id)?.valores ?? []), ...valores].slice(-100)
+        }))
       }
       return {
         ...state,
         datosOriginales,
         imus,
         emgs,
+        historial,
         rotacionesCero: (state.rotacionesCero && state.rotacionesCero.length === imus.length && state.rotacionesCero) || imus.map(() => Quaternion.ONE),
         grabacion: state.grabando ? [
           ...state.grabacion,
