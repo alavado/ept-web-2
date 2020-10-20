@@ -81,6 +81,9 @@ const Camara = props => {
 
   return (
     <div className="Camara">
+      <button onClick={() => dispatch({ type: 'sensores/grabar_emg' })}>
+        Enviar
+      </button>
       <Webcam
         videoConstraints={{
           aspectRatio: esAndroid() ? (height / (width - 55)) : (width / (height - 55)),
@@ -93,7 +96,7 @@ const Camara = props => {
       {props.children}
       <div className="Camara__inferior">
         {grabacion.length > 0 ? (
-          <button onClick={subirEjercicio}>{subiendo ? 'Subiendo...' : 'Subir'}</button>
+          <button onClick={subirEjercicio}>{subiendo ? 'Enviando datos...' : 'Analizar'}</button>
         ) :
         <button
           onClick={() => grabando ? detenerGrabacion() : grabar()}

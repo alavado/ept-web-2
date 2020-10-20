@@ -17,7 +17,12 @@
   justify-content: space-between;
 }
 
+.GraficoEMGSimple_subtitulo {
+  padding: .75rem 0 0 .75rem;
+}
+
 .GraficoEMGSimple__contenedor_grafico {
   background-color: white;
   padding: .5rem;
+  height: 5rem;
 }

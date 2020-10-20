@@ -28,10 +28,19 @@ export function* webSocketSaga() {
   yield put(actualizarMediciones(msg))
 }
 
+export function* recordSaga() {
+  yield socket.send('prueba')
+}
+
 export function* watchIncrementAsync() {
   yield takeEvery('sensores/actualizar_async', webSocketSaga)
 }
 
+export function* record() {
+  yield takeEvery('sensores/grabar_emg', recordSaga)
+}
+
 export default function* rootSaga() {
   yield watchIncrementAsync()
+  yield record()
 }
