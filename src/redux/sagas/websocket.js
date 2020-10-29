@@ -36,8 +36,12 @@ export function* watchIncrementAsync() {
   yield takeEvery('sensores/actualizar_async', webSocketSaga)
 }
 
-export function* record() {
-  yield takeEvery('sensores/grabar_emg', recordSaga)
+export function record() {
+  socket.send('grabar')
+}
+
+export function detenerRecord(idEjercicio) {
+  socket.send(idEjercicio)
 }
 
 export default function* rootSaga() {

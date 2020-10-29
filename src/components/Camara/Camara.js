@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { graba, dejaDeGrabar } from '../../redux/ducks/sensores'
 import { useParams, useHistory } from 'react-router-dom'
 import queryPaciente from '../../graphql/queries/paciente'
+import { detenerRecord, record } from '../../redux/sagas/websocket'
 
 const Camara = props => {
 
@@ -38,6 +39,7 @@ const Camara = props => {
 
   const grabar = useCallback(() => {
     dispatch(graba())
+    record()
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
       mimeType: "video/webm"
     })
@@ -62,13 +64,14 @@ const Camara = props => {
       const file = new Blob(grabacion, { type: "video/webm" })
       try {
         const { data: { upload: { id: video } } } = await upload({ variables: { file } })
-        await agregarEPT({
+        const { data: { createRegistroEpt: { registroEpt: { id } } } } = await agregarEPT({
           variables: { paciente, video, datosIMU: grabacionIMU },
           refetchQueries: [{
             query: queryPaciente,
             variables: { id: paciente }
           }]
         })
+        detenerRecord(`detener,${id}`)
         history.go(-2)
       } catch (e) {
         console.log(e)

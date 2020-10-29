@@ -41,6 +41,7 @@ const GraficoEMGSimple = () => {
                   legend: {
                     display: false
                   },
+                  animation: false,
                   scales: {
                     yAxes: [{
                       ticks: {
