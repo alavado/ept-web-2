@@ -44,8 +44,8 @@ const GraficoEMGSimple = () => {
                   scales: {
                     yAxes: [{
                       ticks: {
-                        suggestedMin: 300,
-                        suggestedMax: 1000
+                        min: 500,
+                        max: 1000
                       }
                     }],
                     xAxes: [{
