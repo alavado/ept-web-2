@@ -4,13 +4,13 @@ const mutation = gql`
   mutation AgregarEPT(
     $paciente: ID!
     $video: ID
-    $datosIMU: JSON
+    $datos_imu: ID
   ) {
     createRegistroEpt (input: {
       data: {
         paciente: $paciente
         video: $video
-        datos_imu: $datosIMU
+        datos_imu: $datos_imu
       }
     }) {
       registroEpt {

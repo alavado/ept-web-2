@@ -61,11 +61,13 @@ const Camara = props => {
     }
     if (grabacion.length) {
       setSubiendo(true)
-      const file = new Blob(grabacion, { type: "video/webm" })
+      const archivoVideo = new Blob(grabacion, { type: 'video/webm' })
+      const archivoIMU = new Blob([JSON.stringify(grabacionIMU)], { type: 'application/json' })
       try {
-        const { data: { upload: { id: video } } } = await upload({ variables: { file } })
+        const { data: { upload: { id: video } } } = await upload({ variables: { file: archivoVideo } })
+        const { data: { upload: { id: datos_imu } } } = await upload({ variables: { file: archivoIMU } })
         const { data: { createRegistroEpt: { registroEpt: { id } } } } = await agregarEPT({
-          variables: { paciente, video, datosIMU: grabacionIMU },
+          variables: { paciente, video, datos_imu },
           refetchQueries: [{
             query: queryPaciente,
             variables: { id: paciente }
