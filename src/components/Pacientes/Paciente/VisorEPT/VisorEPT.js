@@ -9,17 +9,10 @@ const VisorEPT = () => {
 
   const { id } = useParams()
   const { data, loading } = useQuery(query, { variables: { id }})
-  const [articulacion, setArticulacion] = useState()
   
   if (loading) {
     return null
   }
-
-  const articulaciones = data.registroEpt.datos_imu[0].datos.map(d => d.segmento)
-  const datosGrafico = articulacion && data.registroEpt.datos_imu.map(d => ({
-    v: d.datos.find(art => art.segmento === articulacion).angulos,
-    t: d.t
-  }))
   
   return (
     <div className="VisorEPT">
@@ -30,17 +23,11 @@ const VisorEPT = () => {
           className="VisorEPT__video"
         />
       </div>
-      <div className="VisorEPT__contenedor_derecha">
-        <select
-          onChange={e => setArticulacion(e.target.value)}
-        >
-          {articulaciones.map(a => (
-            <option key={`option-${a}`} value={a}>{a}</option>
-          ))}
-        </select>
-        <div className="VisorEPT__graficos">
-          <GraficoTemporal datos={datosGrafico} />
-        </div>
+      <div>
+        <a href={`https://compsci.cl/ept/${data.registroEpt.datos_imu.url}`}>Descargar datos IMU</a>
+      </div>
+      <div>
+        <a href={`https://compsci.cl/ept/${data.registroEpt.datos_emg.url}`}>Descargar datos EMG</a>
       </div>
     </div>
   )

@@ -9,7 +9,12 @@ const query = gql`
         previewUrl
         url
       }
-      datos_imu
+      datos_imu {
+        url
+      }
+      datos_emg {
+        url
+      }
     }
   }
 `
