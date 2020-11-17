@@ -24,10 +24,10 @@ const VisorEPT = () => {
         />
       </div>
       <div>
-        <a href={`https://compsci.cl/ept/${data.registroEpt.datos_imu.url}`}>Descargar datos IMU</a>
+        <a href={`https://compsci.cl/ept/${data.registroEpt.datos_imu.url}`} rel="noreferrer noopener" target="_blank">Descargar datos IMU</a>
       </div>
       <div>
-        <a href={`https://compsci.cl/ept/${data.registroEpt.datos_emg.url}`}>Descargar datos EMG</a>
+        <a href={`https://compsci.cl/ept/${data.registroEpt.datos_emg.url}`} rel="noreferrer noopener" target="_blank">Descargar datos EMG</a>
       </div>
     </div>
   )
