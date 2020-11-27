@@ -18,7 +18,7 @@ import { detenerRecord, record } from '../../redux/sagas/websocket'
 const Camara = props => {
 
   const { id: paciente } = useParams()
-  const { grabando, grabacion: grabacionIMU } = useSelector(state => state.sensores)
+  const { imus, grabando, grabacion: grabacionIMU, rotacionesCero } = useSelector(state => state.sensores)
   const [grabacion, setGrabacion] = useState([])
   const [upload] = useMutation(uploadMutation)
   const [agregarEPT] = useMutation(agregarEPTMutation)
@@ -62,18 +62,18 @@ const Camara = props => {
     if (grabacion.length) {
       setSubiendo(true)
       const archivoVideo = new Blob(grabacion, { type: 'video/webm' })
-      const archivoIMU = new Blob([JSON.stringify(grabacionIMU)], { type: 'application/json' })
+      // const archivoIMU = new Blob([JSON.stringify(grabacionIMU)], { type: 'application/json' })
       try {
         const { data: { upload: { id: video } } } = await upload({ variables: { file: archivoVideo } })
-        const { data: { upload: { id: datos_imu } } } = await upload({ variables: { file: archivoIMU } })
+        // const { data: { upload: { id: datos_imu } } } = await upload({ variables: { file: archivoIMU } })
         const { data: { createRegistroEpt: { registroEpt: { id } } } } = await agregarEPT({
-          variables: { paciente, video, datos_imu },
+          variables: { paciente, video },
           refetchQueries: [{
             query: queryPaciente,
             variables: { id: paciente }
           }]
         })
-        detenerRecord(`detener,${id}`)
+        detenerRecord(`detener,${id}|${imus[0].mac}|${imus[1].mac}|${imus[2].mac}|${imus[3].mac}|${JSON.stringify(rotacionesCero)}`)
         history.go(-2)
       } catch (e) {
         console.log(e)
