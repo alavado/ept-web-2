@@ -1,2 +1,4 @@
-- se suban los 2 minutos
-- error graphql payload too large
+- cambiar frecuencia
+- agregar correccion q
+- agregar angulos relativos
+- hacer graficos

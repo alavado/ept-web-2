@@ -5,41 +5,68 @@ import { useParams } from 'react-router-dom'
 import './VisorEPT.css'
 import GraficoTemporal from './GraficoTemporal'
 import axios from 'axios'
-import { graba } from '../../../../redux/ducks/sensores'
+import { formatearCuaternionMMR, euler, calcularCuaternionRelativo } from '../../../../helpers/rotaciones'
 
 const VisorEPT = () => {
 
   const { id } = useParams()
   const { data, loading } = useQuery(query, { variables: { id }})
   const [descargando, setDescargando] = useState(true)
+  const [datosEMG, setDatosEMG] = useState([])
+  const [datosIMU, setDatosIMU] = useState([])
 
   useEffect(() => {
     if (data) {
       axios.get(`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`, { responseType: 'text' })
         .then(res => {
           const { data: { grabacionIMU, grabacionEMG, macs, correcciones } } = res
-          console.log({grabacionEMG})
-          console.log({grabacionIMU})
-          console.log({correcciones})
           const dataReducida = grabacionIMU.slice(1).reduce((arr, punto) => {
             return arr[arr.length - 1][0] !== punto[0] ? [...arr, punto] : arr
           }, [grabacionIMU[0]])
-          console.log({dataReducida})
           const datosSincronizados = dataReducida.map((d, i) => {
             const rotaciones = []
             let j = i
             while (rotaciones.length < Object.keys(macs).length && j >= 0) {
-              const [mac, x, y, z, w] = dataReducida[j--]
+              const [mac, w, x, y, z] = dataReducida[j--]
+              const cuaternion = formatearCuaternionMMR([w, x, y, z])
               if (!rotaciones.find(r => r.mac === mac)) {
-                rotaciones.push({ mac, x, y, z, w })
+                rotaciones.push({ mac, cuaternion, angulosAbsolutos: euler(cuaternion) })
               }
             }
             return {
               ts: d[5],
               rotaciones
             }
+          }).filter(d => d.rotaciones.length === Object.keys(macs).length)
+          const angulos = datosSincronizados.map((d, i) => {
+            const { rotaciones, ts } = d
+            const { cuaternion: cuaternionTorso} = rotaciones.find(r => r.mac === macs.macTronco)
+            const { cuaternion: cuaternionHombro } = rotaciones.find(r => r.mac === macs.macHombro)
+            const { cuaternion: cuaternionCodo } = rotaciones.find(r => r.mac === macs.macCodo)
+            const { cuaternion: cuaternionMuñeca } = rotaciones.find(r => r.mac === macs.macMuñeca)
+            const cuaternionRelativoTorso = calcularCuaternionRelativo([cuaternionTorso])
+            const cuaternionRelativoHombro = calcularCuaternionRelativo([cuaternionTorso, cuaternionHombro])
+            const cuaternionRelativoCodo = calcularCuaternionRelativo([cuaternionTorso, cuaternionHombro, cuaternionCodo])
+            const cuaternionRelativoMuñeca = calcularCuaternionRelativo([cuaternionTorso, cuaternionHombro, cuaternionCodo, cuaternionMuñeca])
+            return {
+              ts: Number(ts),
+              torso: euler(cuaternionRelativoTorso),
+              hombro: euler(cuaternionRelativoHombro),
+              codo: euler(cuaternionRelativoCodo),
+              muñeca: euler(cuaternionRelativoMuñeca)
+            }
           })
-          console.log({datosSincronizados})
+          setDatosIMU(angulos)
+          setDatosEMG(grabacionEMG.map(g => {
+            const [emg1, emg2, emg3, emg4, ts] = g.split(',')
+            return {
+              ts: Number(ts),
+              emg1: Number(emg1),
+              emg2: Number(emg2),
+              emg3: Number(emg3),
+              emg4: Number(emg4)
+            }
+          }))
           setDescargando(false)
         })
     }
@@ -48,16 +75,22 @@ const VisorEPT = () => {
   if (loading) {
     return null
   }
+
+  console.log(
+    {datosEMG,
+    datosIMU}
+  )
   
   return (
     <div className="VisorEPT">
       <div className="VisorEPT__contenedor_izquierda">
-        <video
+        {descargando && <div>Descargando datos...</div>}
+        {/* <video
           src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
           controls={true}
           className="VisorEPT__video"
         />
-        {descargando && <div>Descargando datos...</div>}
+        {descargando && <div>Descargando datos...</div>} */}
       </div>
       <div>
         <a href={`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`} rel="noreferrer noopener" target="_blank">Descargar datos EMG</a>
