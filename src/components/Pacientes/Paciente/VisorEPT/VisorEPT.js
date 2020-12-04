@@ -3,9 +3,10 @@ import { useQuery } from '@apollo/client'
 import query from '../../../../graphql/queries/ept'
 import { useParams } from 'react-router-dom'
 import './VisorEPT.css'
-import GraficoTemporal from './GraficoTemporal'
 import axios from 'axios'
 import { formatearCuaternionMMR, euler, calcularCuaternionRelativo } from '../../../../helpers/rotaciones'
+import GraficosEMG from './GraficosEMG'
+import GraficosIMU from './GraficosIMU'
 
 const VisorEPT = () => {
 
@@ -38,6 +39,7 @@ const VisorEPT = () => {
               rotaciones
             }
           }).filter(d => d.rotaciones.length === Object.keys(macs).length)
+          console.log(correcciones)
           const angulos = datosSincronizados.map((d, i) => {
             const { rotaciones, ts } = d
             const { cuaternion: cuaternionTorso} = rotaciones.find(r => r.mac === macs.macTronco)
@@ -75,23 +77,18 @@ const VisorEPT = () => {
   if (loading) {
     return null
   }
-
-  console.log(
-    {datosEMG,
-    datosIMU}
-  )
   
   return (
     <div className="VisorEPT">
-      <div className="VisorEPT__contenedor_izquierda">
-        {descargando && <div>Descargando datos...</div>}
-        {/* <video
-          src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
-          controls={true}
-          className="VisorEPT__video"
-        />
-        {descargando && <div>Descargando datos...</div>} */}
-      </div>
+      {descargando && <div>Descargando datos...</div>}
+      <GraficosEMG datos={datosEMG} />
+      <GraficosIMU datos={datosIMU} />
+      {/* <video
+        src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
+        controls={true}
+        className="VisorEPT__video"
+      />
+      {descargando && <div>Descargando datos...</div>} */}
       <div>
         <a href={`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`} rel="noreferrer noopener" target="_blank">Descargar datos EMG</a>
       </div>

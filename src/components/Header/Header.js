@@ -1,12 +1,10 @@
 import React from 'react'
 import './Header.css'
 
-const titulo: string = 'Mediciones ACHS'
-
-const Header = (): JSX.Element => {
+const Header = () => {
   return (
     <div className="Header">
-      <h1>{titulo}</h1>
+      <h1>Mediciones ACHS</h1>
     </div>
   )
 }
