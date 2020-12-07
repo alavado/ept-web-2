@@ -4,7 +4,7 @@ import query from '../../../../graphql/queries/ept'
 import { useParams } from 'react-router-dom'
 import './VisorEPT.css'
 import axios from 'axios'
-import { formatearCuaternionMMR, euler, calcularCuaternionRelativo } from '../../../../helpers/rotaciones'
+import { formatearCuaternionMMR, euler, calcularCuaternionRelativo, corregirCuaternion } from '../../../../helpers/rotaciones'
 import GraficosEMG from './GraficosEMG'
 import GraficosIMU from './GraficosIMU'
 
@@ -21,6 +21,7 @@ const VisorEPT = () => {
       axios.get(`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`, { responseType: 'text' })
         .then(res => {
           const { data: { grabacionIMU, grabacionEMG, macs, correcciones } } = res
+          //const [correccionTorso, correccionHombro, correccionCodo, correccionMuñeca] = correcciones
           const dataReducida = grabacionIMU.slice(1).reduce((arr, punto) => {
             return arr[arr.length - 1][0] !== punto[0] ? [...arr, punto] : arr
           }, [grabacionIMU[0]])
@@ -29,7 +30,10 @@ const VisorEPT = () => {
             let j = i
             while (rotaciones.length < Object.keys(macs).length && j >= 0) {
               const [mac, w, x, y, z] = dataReducida[j--]
-              const cuaternion = formatearCuaternionMMR([w, x, y, z])
+              let cuaternion = formatearCuaternionMMR([w, x, y, z])
+              if (correcciones[i]) {
+                cuaternion = corregirCuaternion(cuaternion, correcciones[i], i === 0)
+              }
               if (!rotaciones.find(r => r.mac === mac)) {
                 rotaciones.push({ mac, cuaternion, angulosAbsolutos: euler(cuaternion) })
               }

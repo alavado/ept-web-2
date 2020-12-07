@@ -4,43 +4,31 @@ import './GraficosEMG.css'
 
 const GraficosEMG = ({ datos }) => {
 
-  console.log(datos)
+  const propiedades = ['emg1', 'emg2', 'emg3', 'emg4']
 
   return (
     <div className="GraficosEMG">
-      <h1>EMG</h1>
-      <Line
-        data={{
-          labels: datos.filter((_, i) => i % 1000 === 0).map(d => d.ts),
-          datasets: [{
-            data: datos.filter((_, i) => i % 1000 === 0).map(d => d.emg1),
-          }]
-        }}
-      />
-      <Line
-        data={{
-          labels: datos.filter((_, i) => i % 1000 === 0).map(d => d.ts),
-          datasets: [{
-            data: datos.filter((_, i) => i % 1000 === 0).map(d => d.emg2),
-          }]
-        }}
-      />
-      <Line
-        data={{
-          labels: datos.filter((_, i) => i % 1000 === 0).map(d => d.ts),
-          datasets: [{
-            data: datos.filter((_, i) => i % 1000 === 0).map(d => d.emg3),
-          }]
-        }}
-      />
-      <Line
-        data={{
-          labels: datos.filter((_, i) => i % 1000 === 0).map(d => d.ts),
-          datasets: [{
-            data: datos.filter((_, i) => i % 1000 === 0).map(d => d.emg4),
-          }]
-        }}
-      />
+      {propiedades.map(prop => (
+        <div key={`grafico-emg-${prop}`}>
+          <h1>EMG {prop}</h1>
+          <div className="GraficosEMG__contenedor_grafico">
+            <Line
+              data={{
+                labels: datos.filter((_, i) => i % 1000 === 0).map(d => d.ts),
+                datasets: [{
+                  data: datos.filter((_, i) => i % 1000 === 0).map(d => d[prop]),
+                  label: 'mV',
+                  pointRadius: 0,
+                  borderColor: 'red'
+                }]
+              }}
+              options={{
+                maintainAspectRatio: false
+              }}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
