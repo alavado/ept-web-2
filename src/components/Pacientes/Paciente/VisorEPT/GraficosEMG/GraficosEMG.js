@@ -14,9 +14,9 @@ const GraficosEMG = ({ datos }) => {
           <div className="GraficosEMG__contenedor_grafico">
             <Line
               data={{
-                labels: datos.filter((_, i) => i % 1000 === 0).map(d => d.ts),
+                labels: datos.filter((_, i) => i % 10 === 0).map(d => d.ts),
                 datasets: [{
-                  data: datos.filter((_, i) => i % 1000 === 0).map(d => d[prop]),
+                  data: datos.filter((_, i) => i % 10 === 0).map(d => d[prop]),
                   label: 'mV',
                   pointRadius: 0,
                   borderColor: 'red'

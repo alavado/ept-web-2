@@ -7,6 +7,7 @@ import axios from 'axios'
 import { formatearCuaternionMMR, euler, calcularCuaternionRelativo, corregirCuaternion } from '../../../../helpers/rotaciones'
 import GraficosEMG from './GraficosEMG'
 import GraficosIMU from './GraficosIMU'
+import Skeleton from 'react-loading-skeleton'
 
 const VisorEPT = () => {
 
@@ -84,9 +85,13 @@ const VisorEPT = () => {
   
   return (
     <div className="VisorEPT">
-      {descargando && <div>Descargando datos...</div>}
-      <GraficosEMG datos={datosEMG} />
-      <GraficosIMU datos={datosIMU} />
+      {descargando
+        ? <Skeleton count={7} />
+        : <>
+            <GraficosEMG datos={datosEMG} />
+            <GraficosIMU datos={datosIMU} />
+          </>
+      }
       {/* <video
         src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
         controls={true}
