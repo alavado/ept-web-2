@@ -5,6 +5,7 @@ import './GraficosEMG.css'
 const GraficosEMG = ({ datos }) => {
 
   const propiedades = ['emg1', 'emg2', 'emg3', 'emg4']
+  const menosDatos = datos.filter((_, i) => i % 10 === 0)
 
   return (
     <div className="GraficosEMG">
@@ -14,9 +15,9 @@ const GraficosEMG = ({ datos }) => {
           <div className="GraficosEMG__contenedor_grafico">
             <Line
               data={{
-                labels: datos.filter((_, i) => i % 10 === 0).map(d => d.ts),
+                labels: menosDatos.map(d => Math.round(d.ts - menosDatos[0].ts)),
                 datasets: [{
-                  data: datos.filter((_, i) => i % 10 === 0).map(d => d[prop]),
+                  data: datos.map(d => d[prop]),
                   label: 'mV',
                   pointRadius: 0,
                   borderColor: 'red'

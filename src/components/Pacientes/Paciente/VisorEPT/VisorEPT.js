@@ -22,20 +22,21 @@ const VisorEPT = () => {
       axios.get(`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`, { responseType: 'text' })
         .then(res => {
           const { data: { grabacionIMU, grabacionEMG, macs, correcciones } } = res
+          console.log(grabacionIMU.map(d => d[5]))
           //const [correccionTorso, correccionHombro, correccionCodo, correccionMuñeca] = correcciones
-          const dataReducida = grabacionIMU.slice(1).reduce((arr, punto) => {
+          const dataReducida = grabacionIMU.reduce((arr, punto) => {
             return arr[arr.length - 1][0] !== punto[0] ? [...arr, punto] : arr
           }, [grabacionIMU[0]])
+          console.log({dataReducida})
           const datosSincronizados = dataReducida.map((d, i) => {
             const rotaciones = []
             let j = i
             while (rotaciones.length < Object.keys(macs).length && j >= 0) {
               const [mac, w, x, y, z] = dataReducida[j--]
-              let cuaternion = formatearCuaternionMMR([w, x, y, z])
-              if (correcciones[i]) {
-                cuaternion = corregirCuaternion(cuaternion, correcciones[i], i === 0)
-              }
               if (!rotaciones.find(r => r.mac === mac)) {
+                let cuaternion = formatearCuaternionMMR([w, x, y, z])
+                const indiceMac = Object.keys(macs).findIndex(m => macs[m] === mac)
+                cuaternion = corregirCuaternion(cuaternion, correcciones[indiceMac], indiceMac === 0)
                 rotaciones.push({ mac, cuaternion, angulosAbsolutos: euler(cuaternion) })
               }
             }

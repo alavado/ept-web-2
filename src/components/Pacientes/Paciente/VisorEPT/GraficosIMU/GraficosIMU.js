@@ -40,7 +40,7 @@ const GraficosIMU = ({ datos }) => {
           <div className="GraficosIMU__contenedor_grafico">
             <Line
               data={{
-                labels: datos.map(d => d.ts),
+                labels: datos.map(d => d.ts - datos[0].ts),
                 datasets: ejes.map((eje, i) => (
                   {
                     data: datos.map(d => d[prop.nombre][i]),
