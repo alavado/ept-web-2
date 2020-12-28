@@ -4,7 +4,7 @@
 
 .GraficosIMU__titulo {
   font-weight: 600;
-  margin-top: 1rem;
+  padding-bottom: .5rem;
 }
 
 .GraficosIMU__tarjeta_grafico {

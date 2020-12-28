@@ -25,6 +25,9 @@ const GraficosEMG = ({ datos }) => {
               }}
               options={{
                 maintainAspectRatio: false,
+                legend: {
+                  position: 'right'
+                },
                 scales: {
                   xAxes: [{
                     ticks: {
