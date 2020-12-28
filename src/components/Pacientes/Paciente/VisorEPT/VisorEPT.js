@@ -22,12 +22,9 @@ const VisorEPT = () => {
       axios.get(`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`, { responseType: 'text' })
         .then(res => {
           const { data: { grabacionIMU, grabacionEMG, macs, correcciones } } = res
-          console.log(grabacionIMU.map(d => d[5]))
-          //const [correccionTorso, correccionHombro, correccionCodo, correccionMuñeca] = correcciones
           const dataReducida = grabacionIMU.reduce((arr, punto) => {
             return arr[arr.length - 1][0] !== punto[0] ? [...arr, punto] : arr
           }, [grabacionIMU[0]])
-          console.log({dataReducida})
           const datosSincronizados = dataReducida.map((d, i) => {
             const rotaciones = []
             let j = i
@@ -45,7 +42,6 @@ const VisorEPT = () => {
               rotaciones
             }
           }).filter(d => d.rotaciones.length === Object.keys(macs).length)
-          console.log(correcciones)
           const angulos = datosSincronizados.map((d, i) => {
             const { rotaciones, ts } = d
             const { cuaternion: cuaternionTorso} = rotaciones.find(r => r.mac === macs.macTronco)
@@ -79,6 +75,14 @@ const VisorEPT = () => {
         })
     }
   }, [data])
+
+  const descargar = (datos, fname) => {
+    const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(datos))
+    const a = document.getElementById('downloadAnchorElem')
+    a.setAttribute('href', data)
+    a.setAttribute('download', fname)
+    a.click();
+  }
   
   if (loading) {
     return null
@@ -87,11 +91,35 @@ const VisorEPT = () => {
   return (
     <div className="VisorEPT">
       {descargando
-        ? <Skeleton count={7} />
-        : <>
-            <GraficosEMG datos={datosEMG} />
-            <GraficosIMU datos={datosIMU} />
-          </>
+        ? <Skeleton count={7} style={{ margin: '1rem' }} />
+        : <div className="VisorEPT__contenedor">
+            <div className="VisorEPT__contenedor_video">
+              <video
+                src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
+                controls={true}
+                className="VisorEPT__video"
+              />
+              <div className="VisorEPT__botones">
+                <button
+                  className="VisorEPT__boton"
+                  onClick={() => descargar(datosEMG, 'emg.json')}
+                >
+                  Descargar EMG
+                </button>
+                <button
+                  className="VisorEPT__boton"
+                  onClick={() => descargar(datosIMU, 'imu.json')}
+                >
+                  Descargar IMU
+                </button>
+              </div>
+            </div>
+            <div className="VisorEPT__graficos">
+              <GraficosEMG datos={datosEMG} />
+              <GraficosIMU datos={datosIMU} />
+            </div>
+            <a id="downloadAnchorElem" style={{ display: 'none' }}></a>
+          </div>
       }
       {/* <video
         src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
@@ -99,9 +127,9 @@ const VisorEPT = () => {
         className="VisorEPT__video"
       />
       {descargando && <div>Descargando datos...</div>} */}
-      <div>
+      {/* <div>
         <a href={`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`} rel="noreferrer noopener" target="_blank">Descargar datos EMG</a>
-      </div>
+      </div> */}
     </div>
   )
 }

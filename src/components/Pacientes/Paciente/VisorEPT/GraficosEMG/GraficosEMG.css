@@ -1,3 +1,15 @@
 .GraficosEMG__contenedor_grafico {
   height: 33vh;
 }
+
+.GraficosEMG__titulo {
+  font-weight: 600;
+}
+
+.GraficoEMG__tarjeta_grafico {
+  background-color: #fafafa;
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, .25);
+  padding: 1rem;
+  border-radius: .25rem;
+  margin-bottom: 1rem;
+}

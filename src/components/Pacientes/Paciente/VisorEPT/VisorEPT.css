@@ -5,15 +5,40 @@
   width: 100%;
 }
 
+.VisorEPT__contenedor_video {
+  display: flex;
+  flex-direction: column;
+  width: 33vw;
+  position: sticky;
+  top: 3rem;
+  max-height: 60vh;
+}
+
 .VisorEPT__video {
   padding: 1rem;
-  max-width: 100%;
+  max-width: 33vw;
+  max-height: 75vh;
 }
 
-.VisorEPT__contenedor_izquierda {
-  flex: 1;
+.VisorEPT__contenedor {
+  display: flex;
+  align-items: flex-start;
 }
 
-.VisorEPT__contenedor_derecha {
+.VisorEPT__graficos {
   flex: 1;
+  padding: 1rem;
+}
+
+.VisorEPT__botones {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.VisorEPT__boton {
+  cursor: pointer;
 }

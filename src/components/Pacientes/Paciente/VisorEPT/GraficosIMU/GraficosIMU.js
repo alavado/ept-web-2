@@ -33,10 +33,9 @@ const GraficosIMU = ({ datos }) => {
 
   return (
     <div className="GraficosIMU">
-      <h1>IMU</h1>
       {propiedades.map(prop => (
-        <div key={`contenedor-prop-${prop.nombre}`}>
-          <h2>{prop.nombre}</h2>
+        <div className="GraficosIMU__tarjeta_grafico" key={`contenedor-prop-${prop.nombre}`}>
+          <h2 className="GraficosIMU__titulo">IMU: {prop.nombre}</h2>
           <div className="GraficosIMU__contenedor_grafico">
             <Line
               data={{
@@ -51,7 +50,23 @@ const GraficosIMU = ({ datos }) => {
                 ))
               }}
               options={{
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                scales: {
+                  xAxes: [{
+                    ticks: {
+                      maxRotation: 0,
+                      callback: v => {
+                        const totalSegundos = Math.round(v / 1000)
+                        if (totalSegundos % 10 !== 0) {
+                          return ''
+                        }
+                        const minutos = Math.floor(totalSegundos / 60)
+                        const segundos = totalSegundos - minutos * 60
+                        return `0${minutos}:${segundos < 10 ? '0' : ''}${segundos}`
+                      }
+                    }
+                  }]
+                }
               }}
             />
           </div>
