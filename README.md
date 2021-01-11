@@ -1,4 +1,5 @@
-- cambiar frecuencia
-- agregar correccion q
-- agregar angulos relativos
-- hacer graficos
+- marcar a mano la ventana
+- que se pueda adelantar el video
+- dividir en dos la ventana
+- calcular metricas para cada mitad
+- dejar un python en algun lugar

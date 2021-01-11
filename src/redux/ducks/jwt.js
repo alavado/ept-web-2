@@ -4,9 +4,11 @@ const guardarToken = 'jwt/guardarToken'
 const limpiarToken = 'jwt/limpiarToken'
 const guardarUsuario = 'jwt/guardarUsuario'
 
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYxMDM3OTE1MiwiZXhwIjoxNjEyOTcxMTUyfQ.BhhV1ilInux_4WqRTIzhG9OTnDP2UUltZksp9imYwaA'
+
 const defaultState = {
-  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYwNzEwMjQ5OCwiZXhwIjoxNjA5Njk0NDk4fQ.SFfvzyLXnqmhpQlgLIT-v_ng4Vmc69D8tk5ITqsSg0M',
-  id: decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYwNzEwMjQ5OCwiZXhwIjoxNjA5Njk0NDk4fQ.SFfvzyLXnqmhpQlgLIT-v_ng4Vmc69D8tk5ITqsSg0M').id
+  jwt: token,
+  id: decode(token).id
 }
 
 export default function reducer(state = defaultState, action = {}) {
