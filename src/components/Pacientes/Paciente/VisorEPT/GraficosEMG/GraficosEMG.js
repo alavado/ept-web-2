@@ -5,7 +5,7 @@ import './GraficosEMG.css'
 const GraficosEMG = ({ datos }) => {
 
   const propiedades = ['emg1', 'emg2', 'emg3', 'emg4']
-  const menosDatos = datos.filter((_, i) => i % 100 === 0)
+  const menosDatos = datos.filter((_, i) => i % 10000 === 0)
 
   return (
     <div className="GraficosEMG">
