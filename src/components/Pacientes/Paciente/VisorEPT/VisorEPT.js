@@ -16,6 +16,7 @@ const VisorEPT = () => {
   const [descargando, setDescargando] = useState(true)
   const [datosEMG, setDatosEMG] = useState([])
   const [datosIMU, setDatosIMU] = useState([])
+  const [error, setError] = useState()
 
   useEffect(() => {
     if (data) {
@@ -73,8 +74,13 @@ const VisorEPT = () => {
           }))
           setDescargando(false)
         })
+        .catch(err => setError('Datos no encontrados'))
     }
   }, [data])
+
+  if (error) {
+    return error
+  }
 
   const descargar = (datos, fname) => {
     const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(datos))

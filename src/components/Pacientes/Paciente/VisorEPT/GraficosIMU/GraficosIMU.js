@@ -77,7 +77,8 @@ const GraficosIMU = ({ datos }) => {
                   data: menosDatos.map(d => d[prop.nombre][i]),
                   label: eje.nombre,
                   pointRadius: 0,
-                  borderColor: eje.color
+                  borderColor: eje.color,
+                  borderWidth: 1
                 }
               ))
             }}
