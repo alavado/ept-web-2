@@ -6,6 +6,9 @@
   border-bottom: 1px solid #677371;
   position: sticky;
   top: 0;
-  background-color: white;
+  background: linear-gradient(darkgreen, green, darkgreen);
+  color: white;
+  text-shadow: 1px 1px black;
   z-index: 2;
+  font-size: 1.5rem;
 }

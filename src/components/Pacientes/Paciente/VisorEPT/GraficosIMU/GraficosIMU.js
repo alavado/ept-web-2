@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
 import './GraficosIMU.css'
 
@@ -29,52 +29,92 @@ const ejes = [
   }
 ]
 
+const f = 100
+
 const GraficosIMU = ({ datos }) => {
+
+  const menosDatos = useMemo(() => (
+    datos
+      .filter((_, i) => i % f === 0)
+      .map((d, i) => datos
+        .slice(i * f, (i + 1) * f)
+        .reduce((obj, x) => ({
+          ...obj,
+          hombro: [
+            x.hombro[0] + obj.hombro[0],
+            x.hombro[1] + obj.hombro[1],
+            x.hombro[2] + obj.hombro[2]
+          ],
+          codo: [
+            x.codo[0] + obj.codo[0],
+            x.codo[1] + obj.codo[1],
+            x.codo[2] + obj.codo[2]
+          ],
+          muñeca: [
+            x.muñeca[0] + obj.muñeca[0],
+            x.muñeca[1] + obj.muñeca[1],
+            x.muñeca[2] + obj.muñeca[2]
+          ],
+        })))
+        .map(d => ({
+          ...d,
+          hombro: [d.hombro[0] / f, d.hombro[1] / f, d.hombro[2] / f],
+          codo: [d.codo[0] / f, d.codo[1] / f, d.codo[2] / f],
+          muñeca: [d.muñeca[0] / f, d.muñeca[1] / f, d.muñeca[2] / f],
+        }))
+  ), [datos])
+  const labels = useMemo(() => menosDatos.map(d => d.ts - menosDatos[0].ts), [menosDatos])
+  const graficos = useMemo(() => (
+    propiedades.map(prop => (
+      <div className="GraficosIMU__tarjeta_grafico" key={`contenedor-prop-${prop.nombre}`}>
+        <h2 className="GraficosIMU__titulo">IMU: {prop.nombre}</h2>
+        <div className="GraficosIMU__contenedor_grafico">
+          <Line
+            data={{
+              labels,
+              datasets: ejes.map((eje, i) => (
+                {
+                  data: menosDatos.map(d => d[prop.nombre][i]),
+                  label: eje.nombre,
+                  pointRadius: 0,
+                  borderColor: eje.color
+                }
+              ))
+            }}
+            options={{
+              maintainAspectRatio: false,
+              legend: {
+                position: 'right'
+              },
+              scales: {
+                xAxes: [{
+                  ticks: {
+                    maxRotation: 0,
+                    callback: v => {
+                      const totalSegundos = Math.round(v / 1000)
+                      if (totalSegundos % 10 !== 0) {
+                        return ''
+                      }
+                      const minutos = Math.floor(totalSegundos / 60)
+                      const segundos = totalSegundos - minutos * 60
+                      return `0${minutos}:${segundos < 10 ? '0' : ''}${segundos}`
+                    }
+                  }
+                }]
+              }
+            }}
+          />
+        </div>
+      </div>
+    ))
+  ), [menosDatos, labels])
+
+  console.log({datos})
+  console.log({menosDatos})
 
   return (
     <div className="GraficosIMU">
-      {propiedades.map(prop => (
-        <div className="GraficosIMU__tarjeta_grafico" key={`contenedor-prop-${prop.nombre}`}>
-          <h2 className="GraficosIMU__titulo">IMU: {prop.nombre}</h2>
-          <div className="GraficosIMU__contenedor_grafico">
-            <Line
-              data={{
-                labels: datos.map(d => d.ts - datos[0].ts),
-                datasets: ejes.map((eje, i) => (
-                  {
-                    data: datos.map(d => d[prop.nombre][i]),
-                    label: eje.nombre,
-                    pointRadius: 0,
-                    borderColor: eje.color
-                  }
-                ))
-              }}
-              options={{
-                maintainAspectRatio: false,
-                legend: {
-                  position: 'right'
-                },
-                scales: {
-                  xAxes: [{
-                    ticks: {
-                      maxRotation: 0,
-                      callback: v => {
-                        const totalSegundos = Math.round(v / 1000)
-                        if (totalSegundos % 10 !== 0) {
-                          return ''
-                        }
-                        const minutos = Math.floor(totalSegundos / 60)
-                        const segundos = totalSegundos - minutos * 60
-                        return `0${minutos}:${segundos < 10 ? '0' : ''}${segundos}`
-                      }
-                    }
-                  }]
-                }
-              }}
-            />
-          </div>
-        </div>
-      ))}
+      {graficos}
     </div>
   )
 }

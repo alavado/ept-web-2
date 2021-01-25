@@ -14,6 +14,7 @@ const Pacientes = () => {
     return null
   }
 
+
   return (
     <div className="Pacientes">
       <div className="Pacientes__superior">
@@ -21,7 +22,7 @@ const Pacientes = () => {
         <button onClick={() => history.push('/pacientes/nuevo')}>Agregar paciente</button>
       </div>
       <div className="Pacientes__lista">
-        {data.pacientes.map(paciente => (
+        {[...data.pacientes].reverse().map(paciente => (
           <FilaPaciente
             key={paciente.id}
             paciente={paciente}

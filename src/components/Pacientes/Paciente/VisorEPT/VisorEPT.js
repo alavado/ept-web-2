@@ -115,10 +115,10 @@ const VisorEPT = () => {
               </div>
             </div>
             <div className="VisorEPT__graficos">
-              {/* <GraficosEMG datos={datosEMG} /> */}
+              <GraficosEMG datos={datosEMG} />
               <GraficosIMU datos={datosIMU} />
             </div>
-            <a id="downloadAnchorElem" style={{ display: 'none' }}></a>
+            <a href="#download" id="downloadAnchorElem" style={{ display: 'none' }}>&nbsp;</a>
           </div>
       }
       {/* <video

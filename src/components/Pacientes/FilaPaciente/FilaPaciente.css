@@ -11,3 +11,9 @@
   clip-path: circle(50% at 50% 50%);
   margin-right: .5rem;
 }
+
+.FilaPaciente:hover {
+  background: radial-gradient(green, lightgreen);
+  color: white;
+  cursor: pointer;
+}

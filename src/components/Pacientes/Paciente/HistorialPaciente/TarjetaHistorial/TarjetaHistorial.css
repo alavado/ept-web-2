@@ -9,6 +9,12 @@
   align-items: center;
 }
 
+.TarjetaHistorial:hover {
+  background: linear-gradient(-45deg, lightpink, green);
+  color: white;
+  cursor: pointer;
+}
+
 .TarjetaHistorial__icono {
   margin-right: 1rem;
   font-size: 1.75rem;
