@@ -7,6 +7,20 @@
   padding-bottom: .5rem;
 }
 
+.GraficosEMG__superior {
+  display: flex;
+  justify-content: space-between;
+}
+
+.GraficosEMG__boton_ocultar {
+  cursor: pointer;
+}
+
+.GraficoEMG__tarjeta_grafico--oculto {
+  height: 2rem;
+  overflow: hidden;
+}
+
 .GraficoEMG__tarjeta_grafico {
   background-color: #fafafa;
   box-shadow: 0 0 .25rem rgba(0, 0, 0, .25);

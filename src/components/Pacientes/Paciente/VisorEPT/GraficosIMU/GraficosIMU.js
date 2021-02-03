@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
+import classNames from 'classnames'
 import './GraficosIMU.css'
 
 const propiedades = [
@@ -33,6 +34,7 @@ const f = 100
 
 const GraficosIMU = ({ datos }) => {
 
+  const [oculto, setOculto] = useState(propiedades.slice().fill(false))
   const menosDatos = useMemo(() => (
     datos
       .filter((_, i) => i % f === 0)
@@ -65,9 +67,23 @@ const GraficosIMU = ({ datos }) => {
   ), [datos])
   const labels = useMemo(() => menosDatos.map(d => d.ts - menosDatos[0].ts), [menosDatos])
   const graficos = useMemo(() => (
-    propiedades.map(prop => (
-      <div className="GraficosIMU__tarjeta_grafico" key={`contenedor-prop-${prop.nombre}`}>
-        <h2 className="GraficosIMU__titulo">IMU: {prop.nombre}</h2>
+    propiedades.map((prop, i) => (
+        <div 
+          key={`contenedor-prop-${prop.nombre}`}
+          className={classNames({
+            "GraficoEMG__tarjeta_grafico": true,
+            "GraficoEMG__tarjeta_grafico--oculto": oculto[i]
+          })}
+        >
+        <div className="GraficosEMG__superior">
+          <h2 className="GraficosEMG__titulo">IMU: {prop.nombre}</h2>
+          <button
+            onClick={() => setOculto([...oculto.slice(0, i), !oculto[i], ...oculto.slice(i + 1)])}
+            className="GraficosEMG__boton_ocultar"
+          >
+            {oculto[i] ? 'Mostrar' : 'Ocultar'} gráfico
+          </button>
+        </div>
         <div className="GraficosIMU__contenedor_grafico">
           <Line
             data={{
@@ -108,7 +124,7 @@ const GraficosIMU = ({ datos }) => {
         </div>
       </div>
     ))
-  ), [menosDatos, labels])
+  ), [menosDatos, labels, oculto, setOculto])
 
   console.log({datos})
   console.log({menosDatos})

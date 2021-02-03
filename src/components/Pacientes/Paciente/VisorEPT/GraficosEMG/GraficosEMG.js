@@ -1,11 +1,14 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
+import classNames from 'classnames'
 import './GraficosEMG.css'
 
 const propiedades = ['emg1', 'emg2', 'emg3', 'emg4']
 const f = 100
 
 const GraficosEMG = ({ datos }) => {
+
+  const [oculto, setOculto] = useState(propiedades.slice().fill(false))
 
   const menosDatos = useMemo(() => (
     datos
@@ -27,11 +30,25 @@ const GraficosEMG = ({ datos }) => {
           emg4: d.emg4 / f
         }))
   ), [datos])
-  
+
   const graficos = useMemo(() => (
-    propiedades.map(prop => (
-      <div className="GraficoEMG__tarjeta_grafico" key={`grafico-emg-${prop}`}>
-        <h2 className="GraficosEMG__titulo">EMG: {prop}</h2>
+    propiedades.map((prop, i) => (
+      <div
+        className={classNames({
+          "GraficoEMG__tarjeta_grafico": true,
+          "GraficoEMG__tarjeta_grafico--oculto": oculto[i]
+        })}
+        key={`grafico-emg-${prop}`}
+      >
+        <div className="GraficosEMG__superior">
+          <h2 className="GraficosEMG__titulo">EMG: {prop}</h2>
+          <button
+            onClick={() => setOculto([...oculto.slice(0, i), !oculto[i], ...oculto.slice(i + 1)])}
+            className="GraficosEMG__boton_ocultar"
+          >
+            {oculto[i] ? 'Mostrar' : 'Ocultar'} gráfico
+          </button>
+        </div>
         <div className="GraficosEMG__contenedor_grafico">
           <Line
             data={{
@@ -70,7 +87,7 @@ const GraficosEMG = ({ datos }) => {
         </div>
       </div>
     ))
-  ), [menosDatos])
+  ), [menosDatos, oculto, setOculto])
 
   return (
     <div className="GraficosEMG">
