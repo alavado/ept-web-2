@@ -101,7 +101,7 @@ const GraficosIMU = ({ datos }) => {
             options={{
               maintainAspectRatio: false,
               legend: {
-                position: 'right'
+                position: 'top'
               },
               scales: {
                 xAxes: [{

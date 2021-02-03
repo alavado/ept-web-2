@@ -18,7 +18,7 @@ const Header = () => {
         onChange={e => dispatch(seleccionaProyecto(e.target.value))}
       >
         <option>EPT</option>
-        <option>Kine</option>
+        <option>Kinesiología</option>
       </select>
     </div>
   )
