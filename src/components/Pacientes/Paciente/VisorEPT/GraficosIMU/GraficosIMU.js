@@ -126,9 +126,6 @@ const GraficosIMU = ({ datos }) => {
     ))
   ), [menosDatos, labels, oculto, setOculto])
 
-  console.log({datos})
-  console.log({menosDatos})
-
   return (
     <div className="GraficosIMU">
       {graficos}

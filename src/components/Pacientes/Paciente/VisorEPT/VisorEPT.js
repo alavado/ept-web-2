@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useQuery } from '@apollo/client'
 import query from '../../../../graphql/queries/ept'
 import { useParams } from 'react-router-dom'
@@ -78,12 +78,37 @@ const VisorEPT = () => {
     }
   }, [data])
 
+  const datosIMUCSV = useMemo(() => {
+    if (!datosIMU) {
+      return ''
+    }
+    return 't,hombro_x,hombro_y,hombro_z,codo_x,codo_y,codo_z,muñeca_x,muñeca_y,muñeca_z\r\n'
+      + datosIMU.map(v => {
+          const { hombro, codo, muñeca, ts } = v
+          const [xh, yh, zh] = hombro
+          const [xc, yc, zc] = codo
+          const [xm, ym, zm] = muñeca
+          return [ts, xh, yh, zh, xc, yc, zc, xm, ym, zm].join(',')
+        }).join('\r\n')
+  }, [datosIMU])
+
+  const datosEMGCSV = useMemo(() => {
+    if (!datosEMG) {
+      return ''
+    }
+    return 't,emg1,emg2,emg3,emg4\r\n'
+      + datosEMG.map(v => {
+          const { emg1, emg2, emg3, emg4, ts } = v
+          return [ts, emg1, emg2, emg3, emg4].join(',')
+        }).join('\r\n')
+  }, [datosEMG])
+
   if (error) {
     return error
   }
 
   const descargar = (datos, fname) => {
-    const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(datos))
+    const data = 'data:text/csv;charset=utf-8,' + encodeURIComponent(datos)
     const a = document.getElementById('downloadAnchorElem')
     a.setAttribute('href', data)
     a.setAttribute('download', fname)
@@ -108,13 +133,13 @@ const VisorEPT = () => {
               <div className="VisorEPT__botones">
                 <button
                   className="VisorEPT__boton"
-                  onClick={() => descargar(datosEMG, 'emg.json')}
+                  onClick={() => descargar(datosEMGCSV, 'emg.csv')}
                 >
                   Descargar EMG
                 </button>
                 <button
                   className="VisorEPT__boton"
-                  onClick={() => descargar(datosIMU, 'imu.json')}
+                  onClick={() => descargar(datosIMUCSV, 'imu.csv')}
                 >
                   Descargar IMU
                 </button>
