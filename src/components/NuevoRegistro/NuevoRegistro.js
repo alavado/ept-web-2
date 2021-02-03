@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import './NuevoRegistro.css'
 
@@ -6,6 +7,8 @@ const NuevoRegistro = () => {
 
   const { id } = useParams()
   const history = useHistory()
+
+  const { proyecto } = useSelector(state => state.proyecto)
 
   const opciones = [
     {
@@ -17,6 +20,10 @@ const NuevoRegistro = () => {
       href: `/pacientes/${id}/agregar_registro/ept`
     }
   ]
+
+  if (proyecto === 'EPT') {
+    history.push(`/pacientes/${id}/agregar_registro/ept`)
+  }
 
   return (
     <div className="NuevoRegistro">

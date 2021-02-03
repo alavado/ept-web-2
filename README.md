@@ -1,5 +1,7 @@
-- marcar a mano la ventana
-- que se pueda adelantar el video
-- dividir en dos la ventana
-- calcular metricas para cada mitad
-- dejar un python en algun lugar
+- agregar selector para proyecto kine
+- en el proyecto de kine, agregar menu previo segun arbol de pruebas.xls
+- poner etiquetas arriba de graficos
+- boton de esconder grafico
+- imprimir reporte de ejercicio, el ejemplo esta tambien en arbol de pruebas
+- intentar reincorporar movimientos forazados y mantenidos
+- cambiar descarga a csv

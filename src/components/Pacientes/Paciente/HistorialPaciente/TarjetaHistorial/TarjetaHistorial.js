@@ -5,11 +5,13 @@ import './TarjetaHistorial.css'
 import { InlineIcon } from '@iconify/react'
 import videoCheck from '@iconify/icons-mdi/video-check'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const TarjetaHistorial = ({ registro }) => {
 
   const { id, createdAt } = registro
   const history = useHistory()
+  const { proyecto } = useSelector(state => state.proyecto)
 
   return (
     <div
@@ -21,7 +23,7 @@ const TarjetaHistorial = ({ registro }) => {
       </div>
       <div className="TarjetaHistorial__contenedor_derecha">
         <div className="TarjetaHistorial__actividad">
-          EPT
+          {proyecto === 'EPT' ? 'EPT' : 'Prueba kinesiología'}
         </div>
         <div className="TarjetaHistorial__fecha">
           {moment(createdAt).fromNow()}
