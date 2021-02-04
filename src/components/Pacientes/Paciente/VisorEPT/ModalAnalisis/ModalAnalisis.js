@@ -77,6 +77,12 @@ const ModalAnalisis = ({ esconder }) => {
                 <th>Inicio</th>
                 <th>Fin</th>
                 <th>Duración</th>
+                <th>RMS</th>
+                <th>Frec. Máx. poder</th>
+                <th>Máx. poder</th>
+                <th>Prom. poder</th>
+                <th>Frec. mitad poder total</th>
+                <th>PSD</th>
               </tr>
             </thead>
             <tbody>
