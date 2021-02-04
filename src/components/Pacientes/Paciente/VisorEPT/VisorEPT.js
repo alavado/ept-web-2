@@ -8,6 +8,7 @@ import { formatearCuaternionMMR, euler, calcularCuaternionRelativo, corregirCuat
 import GraficosEMG from './GraficosEMG'
 import GraficosIMU from './GraficosIMU'
 import Skeleton from 'react-loading-skeleton'
+import ModalAnalisis from './ModalAnalisis'
 
 const VisorEPT = () => {
 
@@ -17,6 +18,7 @@ const VisorEPT = () => {
   const [datosEMG, setDatosEMG] = useState([])
   const [datosIMU, setDatosIMU] = useState([])
   const [error, setError] = useState()
+  const [mostrarAnalisis, setMostrarAnalisis] = useState(false)
 
   useEffect(() => {
     if (data) {
@@ -121,6 +123,7 @@ const VisorEPT = () => {
   
   return (
     <div className="VisorEPT">
+      {mostrarAnalisis && <ModalAnalisis esconder={() => setMostrarAnalisis(false)} />}
       {descargando
         ? <Skeleton count={7} style={{ margin: '1rem' }} />
         : <div className="VisorEPT__contenedor">
@@ -142,6 +145,12 @@ const VisorEPT = () => {
                   onClick={() => descargar(datosIMUCSV, 'imu.csv')}
                 >
                   Descargar IMU
+                </button>
+                <button
+                  className="VisorEPT__boton"
+                  onClick={() => setMostrarAnalisis(true)}
+                >
+                  Análisis
                 </button>
               </div>
             </div>

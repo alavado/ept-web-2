@@ -1,0 +1,65 @@
+.ModalAnalisis {
+  width: 100%;
+  height: calc(100vh - 4rem);
+  background-color: rgba(0, 0, 0, .25);
+  display: flex;
+  padding: 0 1.5rem 1.5rem;
+  overflow: hidden;
+  position: fixed;
+  z-index: 2;
+  position: relative;
+}
+
+.ModalAnalisis__cerrar {
+  position: absolute;
+  right: 3rem;
+  top: 1rem;
+  cursor: pointer;
+}
+
+.ModalAnalisis__contenedor {
+  width: 100%;
+  padding: 2rem;
+  background-color: white;
+  display: flex;
+  gap: 3rem;
+  border-radius: 1rem;
+  box-shadow: .15rem .15rem 1rem rgba(0, 0, 0, .25);
+}
+
+.ModalAnalisis__contenedor h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ModalAnalisis__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-right: 1px solid darkgreen;
+  padding-right: 3rem;
+}
+
+.ModalAnalisis__formulario label {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+
+.ModalAnalisis__formulario input {
+  width: 3rem;
+  text-align: center;
+}
+
+.ModalAnalisis__tabla td, .ModalAnalisis th {
+  border: 1px solid black;
+}
+
+.ModalAnalisis__tabla th {
+  padding: .25rem 1rem;
+  font-weight: bold;
+}
+
+.ModalAnalisis__tabla td {
+  padding: .25rem 1rem;
+}
