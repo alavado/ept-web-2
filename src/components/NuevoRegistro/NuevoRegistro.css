@@ -8,6 +8,7 @@
 
 .NuevoRegistro__titulo {
   font-size: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 .NuevoRegistro__contenedor_opciones {
@@ -15,12 +16,29 @@
   flex-direction: column;
   flex: 1;
   align-items: center;
+  gap: 1rem;
 }
 
 .NuevoRegistro__opcion {
-  font-size: 1.2rem;
-  padding: 1.5rem 2rem;
+  font-size: 1rem;
+  padding: 1rem 2rem;
   border-radius: 3rem;
   width: 100%;
   margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.NuevoRegistro__contenedor_opciones label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .25rem;
+  width: 40vw;
+  font-size: 1.25rem;
+}
+
+.NuevoRegistro__contenedor_opciones select {
+  width: 40vw;
+  font-size: 1.5rem;
+  padding: .25rem;
 }
