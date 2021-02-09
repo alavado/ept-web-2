@@ -18,7 +18,8 @@ const FormPaciente = () => {
     sexo: 'masculino',
     lateralidad: 'diestra',
     fechaDeNacimiento: Date.now(),
-    diagnostico: ''
+    diagnostico: '',
+    rut: ''
   })
   const [mutate, { loading }] = useMutation(mutation)
   const [upload] = useMutation(uploadMutation)
@@ -61,6 +62,13 @@ const FormPaciente = () => {
         />
       </div>
       <form className="FormPaciente__formulario" onSubmit={enviarFormulario}>
+        <label>
+          RUT
+          <input
+            type="text"
+            onChange={e => cambiarVariable(e, 'rut')}
+          />
+        </label>
         <label>
           Nombres
           <input

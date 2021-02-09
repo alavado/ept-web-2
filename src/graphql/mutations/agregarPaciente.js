@@ -10,6 +10,7 @@ const mutation = gql`
     $fechaDeNacimiento: Date!
     $diagnostico: String
     $foto: ID
+    $rut: String
   ) {
     createPaciente(input: {
       data: {
@@ -21,6 +22,7 @@ const mutation = gql`
         fecha_nacimiento: $fechaDeNacimiento
         diagnostico: $diagnostico
         foto: $foto
+        rut: $rut
       }
     }) {
       paciente {
