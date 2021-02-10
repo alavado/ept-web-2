@@ -63,7 +63,7 @@ const GraficosEMG = ({ datos, tiempoVideo }) => {
                   borderWidth: 1
                 },
                 {
-                  data: labels.map((l, i) => l < tiempoVideo * 1000 && labels[i + 1] > tiempoVideo * 1000 ? 500 : 0),
+                  data: labels.map((l, i) => l < tiempoVideo && labels[i + 1] > tiempoVideo ? 500 : 0),
                   type: 'bar',
                   label: 'tiempo',
                   backgroundColor: 'black'
