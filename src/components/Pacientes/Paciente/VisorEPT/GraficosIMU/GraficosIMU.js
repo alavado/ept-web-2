@@ -25,6 +25,10 @@ const propiedades = [
     nombre: 'codo',
     ejes: [
       {
+        nombre: 'x0',
+        color: 'transparent'
+      },
+      {
         nombre: 'pronación / supinación',
         color: 'red'
       },
@@ -42,8 +46,12 @@ const propiedades = [
         color: 'red'
       },
       {
+        nombre: 'x2323',
+        color: 'transparent'
+      },
+      {
         nombre: 'radialización',
-        color: 'blue'
+        color: 'green'
       }
     ]
   }
@@ -114,7 +122,8 @@ const GraficosIMU = ({ datos, tiempoVideo }) => {
                     label: eje.nombre,
                     pointRadius: 0,
                     borderColor: eje.color,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    backgroundColor: 'transparent'
                   }
                 )),
                 {
@@ -132,7 +141,7 @@ const GraficosIMU = ({ datos, tiempoVideo }) => {
               legend: {
                 position: 'top',
                 labels: {
-                  filter: label => label.text !== 'tiempo'
+                  filter: label => label.text !== 'tiempo' && !label.text.startsWith('x')
                 }
               },
               tooltips: false,

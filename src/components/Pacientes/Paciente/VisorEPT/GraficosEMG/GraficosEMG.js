@@ -60,7 +60,8 @@ const GraficosEMG = ({ datos, tiempoVideo }) => {
                   label: 'mV',
                   pointRadius: 0,
                   borderColor: 'red',
-                  borderWidth: 1
+                  borderWidth: 1,
+                  backgroundColor: 'transparent'
                 },
                 {
                   data: labels.map((l, i) => l < tiempoVideo && labels[i + 1] > tiempoVideo ? 500 : 0),

@@ -1,7 +1,3 @@
-- imprimir reporte de ejercicio, el ejemplo esta tambien en arbol de pruebas
-- intentar reincorporar movimientos forazados y mantenidos
-- seleccionar intervalos por nombre
-
 hechos:
 - crear otro proyecto para kine
 - cambiar a achs-mediciones.netlify y poner ept y kine en rutas distintas
