@@ -12,7 +12,7 @@ const propiedades = [
         color: 'red'
       },
       {
-        nombre: 'y',
+        nombre: 'flexión / extensión',
         color: 'green'
       },
       {
@@ -25,12 +25,8 @@ const propiedades = [
     nombre: 'codo',
     ejes: [
       {
-        nombre: '?',
+        nombre: 'pronación / supinación',
         color: 'red'
-      },
-      {
-        nombre: 'pronación / supinación?',
-        color: 'green'
       },
       {
         nombre: 'flexión / extensión',
@@ -42,15 +38,11 @@ const propiedades = [
     nombre: 'muñeca',
     ejes: [
       {
-        nombre: 'x',
+        nombre: 'flexión / extensión',
         color: 'red'
       },
       {
-        nombre: 'y',
-        color: 'green'
-      },
-      {
-        nombre: 'z',
+        nombre: 'radialización',
         color: 'blue'
       }
     ]
