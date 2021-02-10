@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
 import { useQuery } from '@apollo/client'
 import query from '../../../../graphql/queries/ept'
 import { useParams } from 'react-router-dom'
@@ -18,6 +18,8 @@ const VisorEPT = () => {
   const [datosEMG, setDatosEMG] = useState([])
   const [datosIMU, setDatosIMU] = useState([])
   const [error, setError] = useState()
+  const video = useRef()
+  const [tiempoVideo, setTiempoVideo] = useState(0)
   const [mostrarAnalisis, setMostrarAnalisis] = useState(false)
 
   useEffect(() => {
@@ -25,19 +27,32 @@ const VisorEPT = () => {
       axios.get(`https://compsci.cl/ept/${data.registroEpt.datos_emg?.url}`, { responseType: 'text' })
         .then(res => {
           const { data: { grabacionIMU, grabacionEMG, macs, correcciones } } = res
-          const dataReducida = grabacionIMU.reduce((arr, punto) => {
+          const dataSinRepeticiones = grabacionIMU.reduce((arr, punto) => {
             return arr[arr.length - 1][0] !== punto[0] ? [...arr, punto] : arr
           }, [grabacionIMU[0]])
-          const datosSincronizados = dataReducida.map((d, i) => {
+          const datosSincronizados = dataSinRepeticiones.map((d, i) => {
             const rotaciones = []
             let j = i
             while (rotaciones.length < Object.keys(macs).length && j >= 0) {
-              const [mac, w, x, y, z] = dataReducida[j--]
+              const [mac, w, x, y, z] = dataSinRepeticiones[j--]
               if (!rotaciones.find(r => r.mac === mac)) {
                 let cuaternion = formatearCuaternionMMR([w, x, y, z])
-                const indiceMac = Object.keys(macs).findIndex(m => macs[m] === mac)
-                cuaternion = corregirCuaternion(cuaternion, correcciones[indiceMac], indiceMac === 0)
-                rotaciones.push({ mac, cuaternion, angulosAbsolutos: euler(cuaternion) })
+                const correccion = (() => {
+                  if (mac === macs.macTronco) {
+                    return correcciones[0];
+                  }
+                  else if (mac === macs.macHombro) {
+                    return correcciones[1];
+                  }
+                  else if (mac === macs.macCodo) {
+                    return correcciones[2];
+                  }
+                  else {
+                    return correcciones[3];
+                  }
+                })()
+                cuaternion = corregirCuaternion(cuaternion, correccion)
+                rotaciones.push({ mac, cuaternion })
               }
             }
             return {
@@ -45,20 +60,24 @@ const VisorEPT = () => {
               rotaciones
             }
           }).filter(d => d.rotaciones.length === Object.keys(macs).length)
-          const angulos = datosSincronizados.map((d, i) => {
+          console.log({datosSincronizados})
+          const angulos = datosSincronizados.map(d => {
             const { rotaciones, ts } = d
             const { cuaternion: cuaternionTorso} = rotaciones.find(r => r.mac === macs.macTronco)
             const { cuaternion: cuaternionHombro } = rotaciones.find(r => r.mac === macs.macHombro)
             const { cuaternion: cuaternionCodo } = rotaciones.find(r => r.mac === macs.macCodo)
             const { cuaternion: cuaternionMuñeca } = rotaciones.find(r => r.mac === macs.macMuñeca)
-            const cuaternionRelativoTorso = calcularCuaternionRelativo([cuaternionTorso])
+            if (!cuaternionTorso || !cuaternionHombro || !cuaternionCodo || !cuaternionMuñeca) {
+              console.log('maal')
+            }
             const cuaternionRelativoHombro = calcularCuaternionRelativo([cuaternionTorso, cuaternionHombro])
-            const cuaternionRelativoCodo = calcularCuaternionRelativo([cuaternionTorso, cuaternionHombro, cuaternionCodo])
-            const cuaternionRelativoMuñeca = calcularCuaternionRelativo([cuaternionTorso, cuaternionHombro, cuaternionCodo, cuaternionMuñeca])
+            const cuaternionRelativoCodo = calcularCuaternionRelativo([cuaternionHombro, cuaternionCodo])
+            const cuaternionRelativoMuñeca = calcularCuaternionRelativo([cuaternionCodo, cuaternionMuñeca])
             return {
               ts: Number(ts),
-              torso: euler(cuaternionRelativoTorso),
-              hombro: euler(cuaternionRelativoHombro),
+              torso: euler(cuaternionTorso),
+              // esto estoy graficando
+              hombro: euler(cuaternionHombro),
               codo: euler(cuaternionRelativoCodo),
               muñeca: euler(cuaternionRelativoMuñeca)
             }
@@ -76,9 +95,16 @@ const VisorEPT = () => {
           }))
           setDescargando(false)
         })
-        .catch(err => setError('Datos no encontrados'))
+        .catch(() => setError('Datos no encontrados'))
     }
   }, [data])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTiempoVideo(video.current?.currentTime || 0)
+    }, 300)
+    return () => clearInterval(interval)
+  }, [])
 
   const datosIMUCSV = useMemo(() => {
     if (!datosIMU) {
@@ -132,6 +158,7 @@ const VisorEPT = () => {
                 src={'https://compsci.cl/ept/' + data.registroEpt.video.url}
                 controls={true}
                 className="VisorEPT__video"
+                ref={video}
               />
               <div className="VisorEPT__botones">
                 <button
@@ -155,8 +182,8 @@ const VisorEPT = () => {
               </div>
             </div>
             <div className="VisorEPT__graficos">
-              <GraficosEMG datos={datosEMG} />
-              <GraficosIMU datos={datosIMU} />
+              <GraficosEMG datos={datosEMG} tiempoVideo={tiempoVideo} />
+              <GraficosIMU datos={datosIMU} tiempoVideo={tiempoVideo} />
             </div>
             <a href="#download" id="downloadAnchorElem" style={{ display: 'none' }}>&nbsp;</a>
           </div>

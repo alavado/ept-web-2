@@ -6,7 +6,7 @@ import './GraficosEMG.css'
 const propiedades = ['emg1', 'emg2', 'emg3', 'emg4']
 const f = 100
 
-const GraficosEMG = ({ datos }) => {
+const GraficosEMG = ({ datos, tiempoVideo }) => {
 
   const [oculto, setOculto] = useState(propiedades.slice().fill(false))
 
@@ -31,6 +31,7 @@ const GraficosEMG = ({ datos }) => {
         }))
   ), [datos])
 
+  const labels = useMemo(() => menosDatos.map(d => d.ts - menosDatos[0].ts), [menosDatos])
   const graficos = useMemo(() => (
     propiedades.map((prop, i) => (
       <div
@@ -52,19 +53,31 @@ const GraficosEMG = ({ datos }) => {
         <div className="GraficosEMG__contenedor_grafico">
           <Line
             data={{
-              labels: menosDatos.map(d => d.ts - menosDatos[0].ts),
-              datasets: [{
-                data: menosDatos.map(d => d[prop]),
-                label: 'mV',
-                pointRadius: 0,
-                borderColor: 'red',
-                borderWidth: 1
-              }]
+              labels: labels,
+              datasets: [
+                {
+                  data: menosDatos.map(d => d[prop]),
+                  label: 'mV',
+                  pointRadius: 0,
+                  borderColor: 'red',
+                  borderWidth: 1
+                },
+                {
+                  data: labels.map((l, i) => l < tiempoVideo * 1000 && labels[i + 1] > tiempoVideo * 1000 ? 500 : 0),
+                  type: 'bar',
+                  label: 'tiempo',
+                  backgroundColor: 'black'
+                }
+              ]
             }}
             options={{
               maintainAspectRatio: false,
+              animation: false,
               legend: {
-                position: 'top'
+                position: 'top',
+                labels: {
+                  filter: label => label.text !== 'tiempo'
+                }
               },
               scales: {
                 xAxes: [{
@@ -72,7 +85,7 @@ const GraficosEMG = ({ datos }) => {
                     maxRotation: 0,
                     callback: v => {
                       const totalSegundos = Math.round(v)
-                      if (totalSegundos % 10 !== 0) {
+                      if (totalSegundos % 10) {
                         return ''
                       }
                       const minutos = Math.floor(totalSegundos / 60)
@@ -87,7 +100,7 @@ const GraficosEMG = ({ datos }) => {
         </div>
       </div>
     ))
-  ), [menosDatos, oculto, setOculto])
+  ), [menosDatos, oculto, setOculto, tiempoVideo, labels])
 
   return (
     <div className="GraficosEMG">

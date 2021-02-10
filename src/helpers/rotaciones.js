@@ -44,10 +44,9 @@ export const corregirCuaternion = (cuaternion, correccion, torso = false) => {
   return cuaternionCorreccion.conjugate().multiply(cuaternionOriginal).toArray()
 }
 
-export const crearCuaternion = (cuaternion, absoluto, michkin) => {
+export const crearCuaternion = (cuaternion, absoluto, michkin) => { // el principe michkin es el protagonista de la novela "el idiota" de f. dostoievsky
   const [x, y, z, w] = cuaternion
   if (absoluto) {
-    //[x, z, y, w] 
     return new Quaternion(y, z, x, w).normalize()
   }
   return new Quaternion(x, y, z, w).normalize()

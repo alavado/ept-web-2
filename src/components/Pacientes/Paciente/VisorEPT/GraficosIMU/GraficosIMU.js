@@ -6,33 +6,60 @@ import './GraficosIMU.css'
 const propiedades = [
   {
     nombre: 'hombro',
+    ejes: [
+      {
+        nombre: 'abducción',
+        color: 'red'
+      },
+      {
+        nombre: 'y',
+        color: 'green'
+      },
+      {
+        nombre: 'rot. externa',
+        color: 'blue'
+      }
+    ]
   },
   {
     nombre: 'codo',
+    ejes: [
+      {
+        nombre: '?',
+        color: 'red'
+      },
+      {
+        nombre: 'pronación / supinación?',
+        color: 'green'
+      },
+      {
+        nombre: 'flexión / extensión',
+        color: 'blue'
+      }
+    ]
   },
   {
-    nombre: 'muñeca'
+    nombre: 'muñeca',
+    ejes: [
+      {
+        nombre: 'x',
+        color: 'red'
+      },
+      {
+        nombre: 'y',
+        color: 'green'
+      },
+      {
+        nombre: 'z',
+        color: 'blue'
+      }
+    ]
   }
 ]
 
-const ejes = [
-  {
-    nombre: 'x',
-    color: 'red'
-  },
-  {
-    nombre: 'y',
-    color: 'green'
-  },
-  {
-    nombre: 'z',
-    color: 'blue'
-  }
-]
+const f = 50 // f es por franz kafka
 
-const f = 100
-
-const GraficosIMU = ({ datos }) => {
+const GraficosIMU = ({ datos, tiempoVideo }) => {
 
   const [oculto, setOculto] = useState(propiedades.slice().fill(false))
   const menosDatos = useMemo(() => (
@@ -88,28 +115,42 @@ const GraficosIMU = ({ datos }) => {
           <Line
             data={{
               labels,
-              datasets: ejes.map((eje, i) => (
+              datasets: [
+                ...prop.ejes.map((eje, i) => (
+                  {
+                    data: menosDatos.map(d => d[prop.nombre][i]),
+                    label: eje.nombre,
+                    pointRadius: 0,
+                    borderColor: eje.color,
+                    borderWidth: 1
+                  }
+                )),
                 {
-                  data: menosDatos.map(d => d[prop.nombre][i]),
-                  label: eje.nombre,
-                  pointRadius: 0,
-                  borderColor: eje.color,
-                  borderWidth: 1
+                  data: labels.map((l, i) => l < tiempoVideo * 1000 && labels[i + 1] > tiempoVideo * 1000 ? [-60,60] : 0),
+                  type: 'bar',
+                  label: 'tiempo',
+                  backgroundColor: 'black',
+                  
                 }
-              ))
+              ]
             }}
             options={{
               maintainAspectRatio: false,
+              animation: false,
               legend: {
-                position: 'top'
+                position: 'top',
+                labels: {
+                  filter: label => label.text !== 'tiempo'
+                }
               },
+              tooltips: false,
               scales: {
                 xAxes: [{
                   ticks: {
                     maxRotation: 0,
                     callback: v => {
                       const totalSegundos = Math.round(v / 1000)
-                      if (totalSegundos % 10 !== 0) {
+                      if (totalSegundos % 10) {
                         return ''
                       }
                       const minutos = Math.floor(totalSegundos / 60)
@@ -124,7 +165,7 @@ const GraficosIMU = ({ datos }) => {
         </div>
       </div>
     ))
-  ), [menosDatos, labels, oculto, setOculto])
+  ), [menosDatos, labels, oculto, setOculto, tiempoVideo])
 
   return (
     <div className="GraficosIMU">
