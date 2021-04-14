@@ -149,7 +149,13 @@ const VisorEPT = () => {
   
   return (
     <div className="VisorEPT">
-      {mostrarAnalisis && <ModalAnalisis esconder={() => setMostrarAnalisis(false)} />}
+      {mostrarAnalisis &&
+        <ModalAnalisis
+          esconder={() => setMostrarAnalisis(false)}
+          emg={datosEMGCSV}
+          imu={datosIMUCSV}
+        />
+      }
       {descargando
         ? <Skeleton count={7} style={{ margin: '1rem' }} />
         : <div className="VisorEPT__contenedor">

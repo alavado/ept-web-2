@@ -10,6 +10,10 @@
   position: relative;
 }
 
+.ModalAnalisis h3 {
+  font-weight: bold;
+}
+
 .ModalAnalisis__cerrar {
   position: absolute;
   right: 3rem;
@@ -62,4 +66,24 @@
 
 .ModalAnalisis__tabla td {
   padding: .25rem 1rem;
+}
+
+.ModalAnalisis__contenedor_resultados {
+  overflow-x: auto;
+}
+
+.ModalAnalisis__procesando {
+  animation: procesando 2s ease infinite both;
+}
+
+@keyframes procesando {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(15deg);
+  }
+  60% {
+    transform: rotate(-15deg);
+  }
 }
