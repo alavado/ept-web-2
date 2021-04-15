@@ -200,23 +200,23 @@ const ModalAnalisis = ({ esconder, emg, imu }) => {
                 return (
                   <tr key={`fila-ventana-${i}`}>
                     <td>{v.etiqueta}</td>
-                    <td>{v.inicio}</td>
-                    <td>{v.termino}</td>
-                    <td>{v.termino - v.inicio}</td>
-                    <td>{hombro_forzado}</td>
-                    <td>{hombro_mantenido}</td>
-                    <td>{codo_forzado}</td>
-                    <td>{codo_mantenido}</td>
-                    <td>{muneca_forzado}</td>
-                    <td>{muneca_mantenido}</td>
-                    <td>{duracion_sel}</td>
-                    <td>{maxV_sel}</td>
-                    <td>{mean_cvm}</td>
-                    <td>{mean_sel}</td>
-                    <td>{porcentaje_tiempo}</td>
-                    <td>{rms_cvm}</td>
-                    <td>{rms_sel}</td>
-                    <td>{tiempo_sobre30}</td>
+                    <td>{(+v.inicio).toFixed(1)}</td>
+                    <td>{(+v.termino).toFixed(1)}</td>
+                    <td>{(v.termino - v.inicio).toFixed(1)}</td>
+                    <td>{(+hombro_forzado).toFixed(1)}</td>
+                    <td>{(+hombro_mantenido).toFixed(1)}</td>
+                    <td>{(+codo_forzado).toFixed(1)}</td>
+                    <td>{(+codo_mantenido).toFixed(1)}</td>
+                    <td>{(+muneca_forzado).toFixed(1)}</td>
+                    <td>{(+muneca_mantenido).toFixed(1)}</td>
+                    <td>{(+duracion_sel).toFixed(1)}</td>
+                    <td>{(+maxV_sel).toFixed(1)}</td>
+                    <td>{(+mean_cvm).toFixed(1)}</td>
+                    <td>{(+mean_sel).toFixed(1)}</td>
+                    <td>{(+porcentaje_tiempo).toFixed(1)}</td>
+                    <td>{(+rms_cvm).toFixed(1)}</td>
+                    <td>{(+rms_sel).toFixed(1)}</td>
+                    <td>{(+tiempo_sobre30).toFixed(1)}</td>
                     <td><button onClick={() => setVentanas(ventanas.filter((_, j) => i !== j))}>Borrar</button></td>
                   </tr>
                 )
