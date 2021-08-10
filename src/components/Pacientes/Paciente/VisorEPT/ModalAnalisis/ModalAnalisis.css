@@ -62,10 +62,16 @@
 .ModalAnalisis table th {
   padding: .25rem 1rem;
   font-weight: bold;
+  font-size: .85rem;
+  vertical-align: middle;
+  background-color: gray;
+  color: white;
 }
 
 .ModalAnalisis table td {
   padding: .25rem 1rem;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .ModalAnalisis__contenedor_resultados {
