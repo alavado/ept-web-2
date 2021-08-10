@@ -1,7 +1,7 @@
 const seleccionarProyecto = 'proyecto/seleccionarProyecto'
 
 const defaultState = {
-  proyecto: 'EPT'
+  proyecto: 'Kine'
 }
 
 export default function reducer(state = defaultState, action) {

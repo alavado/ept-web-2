@@ -15,10 +15,11 @@ const Header = () => {
       </Link>
       <select
         className="Header__selector"
+        defaultValue="Kine"
         onChange={e => dispatch(seleccionaProyecto(e.target.value))}
       >
-        <option>EPT</option>
-        <option>Kinesiología</option>
+        <option value="EPT">EPT</option>
+        <option value="Kine">Kinesiología</option>
       </select>
     </div>
   )

@@ -55,16 +55,16 @@
   text-align: center;
 }
 
-.ModalAnalisis__tabla td, .ModalAnalisis th {
+.ModalAnalisis table td, .ModalAnalisis th {
   border: 1px solid black;
 }
 
-.ModalAnalisis__tabla th {
+.ModalAnalisis table th {
   padding: .25rem 1rem;
   font-weight: bold;
 }
 
-.ModalAnalisis__tabla td {
+.ModalAnalisis table td {
   padding: .25rem 1rem;
 }
 

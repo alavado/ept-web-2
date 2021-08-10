@@ -3,6 +3,9 @@ import { InlineIcon } from '@iconify/react'
 import close from '@iconify/icons-mdi/close'
 import './ModalAnalisis.css'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
+import TablaEPT from './TablaEPT'
+import TablaKine from './TablaKine'
 
 const estadoInicial = {
   inicio: 0,
@@ -19,6 +22,7 @@ const ModalAnalisis = ({ esconder, emg, imu }) => {
   const [ventanas, setVentanas] = useState([])
   const [nuevaVentana, setNuevaVentana] = useState(estadoInicial)
   const [procesando, setProcesando] = useState(false)
+  const { proyecto } = useSelector(state => state.proyecto)
 
   const agregarVentana = e => {
     e.preventDefault()
@@ -32,7 +36,7 @@ const ModalAnalisis = ({ esconder, emg, imu }) => {
     formData.append('canalr', nuevaVentana.canalRef)
     formData.append('imu', new Blob([imu], { type: 'text/plain' }))
     formData.append('emg', new Blob([emg], { type: 'text/plain' }))
-    axios.post('https://compsci.cl/ept-proc', formData, {
+    axios.post(proyecto === 'EPT' ? 'https://compsci.cl/ept-proc' : 'https://compsci.cl/kine-proc', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
       .then(({ data }) => {
@@ -164,65 +168,10 @@ const ModalAnalisis = ({ esconder, emg, imu }) => {
         </form>
         <div className="ModalAnalisis__contenedor_resultados">
           <h2>Resultados</h2>
-          <table className="ModalAnalisis__tabla">
-            <thead>
-              <tr>
-                <th>Etiqueta</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th>Duración</th>
-                <th>hombro_forzado</th>
-                <th>hombro_mantenido</th>
-                <th>codo_forzado</th>
-                <th>codo_mantenido</th>
-                <th>muneca_forzado</th>
-                <th>muneca_mantenido</th>
-                <th>duracion_sel</th>
-                <th>maxV_sel</th>
-                <th>mean_cvm</th>
-                <th>mean_sel</th>
-                <th>porcentaje_tiempo</th>
-                <th>rms_cvm</th>
-                <th>rms_sel</th>
-                <th>tiempo_sobre30</th>
-                <th>opciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ventanas.map((v, i) => {
-                const {
-                  codo_forzado, codo_mantenido, duracion_sel,
-                  hombro_forzado, hombro_mantenido, maxV_sel,
-                  mean_cvm, mean_sel, muneca_forzado,
-                  muneca_mantenido, porcentaje_tiempo, rms_cvm,
-                  rms_sel,tiempo_sobre30
-                } = v
-                return (
-                  <tr key={`fila-ventana-${i}`}>
-                    <td>{v.etiqueta}</td>
-                    <td>{(+v.inicio).toFixed(1)}</td>
-                    <td>{(+v.termino).toFixed(1)}</td>
-                    <td>{(v.termino - v.inicio).toFixed(1)}</td>
-                    <td>{(+hombro_forzado).toFixed(1)}</td>
-                    <td>{(+hombro_mantenido).toFixed(1)}</td>
-                    <td>{(+codo_forzado).toFixed(1)}</td>
-                    <td>{(+codo_mantenido).toFixed(1)}</td>
-                    <td>{(+muneca_forzado).toFixed(1)}</td>
-                    <td>{(+muneca_mantenido).toFixed(1)}</td>
-                    <td>{(+duracion_sel).toFixed(1)}</td>
-                    <td>{(+maxV_sel).toFixed(1)}</td>
-                    <td>{(+mean_cvm).toFixed(1)}</td>
-                    <td>{(+mean_sel).toFixed(1)}</td>
-                    <td>{(+porcentaje_tiempo).toFixed(1)}</td>
-                    <td>{(+rms_cvm).toFixed(1)}</td>
-                    <td>{(+rms_sel).toFixed(1)}</td>
-                    <td>{(+tiempo_sobre30).toFixed(1)}</td>
-                    <td><button onClick={() => setVentanas(ventanas.filter((_, j) => i !== j))}>Borrar</button></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          {proyecto === 'EPT'
+            ? <TablaEPT ventanas={ventanas} setVentanas={setVentanas} />
+            : <TablaKine ventanas={ventanas} setVentanas={setVentanas} />
+          }
         </div>
       </div>
     </div>
