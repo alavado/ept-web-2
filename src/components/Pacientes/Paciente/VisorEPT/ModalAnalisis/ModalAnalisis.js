@@ -40,23 +40,12 @@ const ModalAnalisis = ({ esconder, emg, imu }) => {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
       .then(({ data }) => {
-        const {
-          codo_forzado, codo_mantenido, duracion_sel,
-          hombro_forzado, hombro_mantenido, maxV_sel,
-          mean_cvm, mean_sel, muneca_forzado,
-          muneca_mantenido, porcentaje_tiempo, rms_cvm,
-          rms_sel,tiempo_sobre30
-        } = data
         setProcesando(false)
         setVentanas([
           ...ventanas,
           {
             ...nuevaVentana,
-            codo_forzado, codo_mantenido, duracion_sel,
-            hombro_forzado, hombro_mantenido, maxV_sel,
-            mean_cvm, mean_sel, muneca_forzado,
-            muneca_mantenido, porcentaje_tiempo, rms_cvm,
-            rms_sel,tiempo_sobre30
+            ...data
           }
         ])
         setNuevaVentana(estadoInicial)
