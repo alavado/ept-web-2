@@ -79,6 +79,8 @@
 }
 
 .ModalAnalisis__procesando {
+  text-align: center;
+  transform: translateY(2rem);
   animation: procesando 2s ease infinite both;
 }
 
@@ -86,10 +88,7 @@
   0% {
     transform: rotate(0deg);
   }
-  30% {
-    transform: rotate(15deg);
-  }
-  60% {
-    transform: rotate(-15deg);
+  100% {
+    transform: rotate(360deg);
   }
 }
