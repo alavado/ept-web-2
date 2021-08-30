@@ -4,7 +4,7 @@ const guardarToken = 'jwt/guardarToken'
 const limpiarToken = 'jwt/limpiarToken'
 const guardarUsuario = 'jwt/guardarUsuario'
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYyODUzMjY4MCwiZXhwIjoxNjMxMTI0NjgwfQ.9Poa1z2kNTtiQ1BJSFUgtUAAdc46uIdv2nTgqbHlg1k'
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNGZhZDA2OWJmY2NmNTJhNGU0ZmQxYSIsImlhdCI6MTYzMDMzNzcwNSwiZXhwIjoxNjMyOTI5NzA1fQ.zuHegpTu5TDHKXt8Jdgr5L6KSuBFy7SQ3wajfvY97-E'
 
 const defaultState = {
   jwt: token,
