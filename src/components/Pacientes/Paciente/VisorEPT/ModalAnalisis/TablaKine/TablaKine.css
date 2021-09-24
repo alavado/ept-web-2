@@ -1,0 +1,16 @@
+.TablaKine__botones {
+  display: grid;
+  grid-auto-flow: column;
+  gap: .5rem;
+}
+
+.TablaKine__botones button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+.TablaKine__botones svg {
+  font-size: 2.25rem;
+}

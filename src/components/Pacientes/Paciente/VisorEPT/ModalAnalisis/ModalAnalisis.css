@@ -55,17 +55,23 @@
   text-align: center;
 }
 
-.ModalAnalisis__tabla td, .ModalAnalisis th {
+.ModalAnalisis table td, .ModalAnalisis th {
   border: 1px solid black;
 }
 
-.ModalAnalisis__tabla th {
+.ModalAnalisis table th {
   padding: .25rem 1rem;
   font-weight: bold;
+  font-size: .85rem;
+  vertical-align: middle;
+  background-color: gray;
+  color: white;
 }
 
-.ModalAnalisis__tabla td {
+.ModalAnalisis table td {
   padding: .25rem 1rem;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .ModalAnalisis__contenedor_resultados {
@@ -73,6 +79,8 @@
 }
 
 .ModalAnalisis__procesando {
+  text-align: center;
+  transform: translateY(2rem);
   animation: procesando 2s ease infinite both;
 }
 
@@ -80,10 +88,7 @@
   0% {
     transform: rotate(0deg);
   }
-  30% {
-    transform: rotate(15deg);
-  }
-  60% {
-    transform: rotate(-15deg);
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -110,7 +110,7 @@ const VisorEPT = () => {
     if (!datosIMU) {
       return ''
     }
-    return 't,hombro_x,hombro_y,hombro_z,codo_x,codo_y,codo_z,muñeca_x,muñeca_y,muñeca_z\r\n'
+    return 't,hombro_x,hombro_y,hombro_z,codo_x,codo_y,codo_z,muneca_x,muneca_y,muneca_z\r\n'
       + datosIMU.map(v => {
           const { hombro, codo, muñeca, ts } = v
           const [xh, yh, zh] = hombro

@@ -1,7 +1,9 @@
 const seleccionarProyecto = 'proyecto/seleccionarProyecto'
+const seleccionarPaciente = 'proyecto/seleccionarPaciente'
 
 const defaultState = {
-  proyecto: 'EPT'
+  proyecto: 'Kine',
+  paciente: {}
 }
 
 export default function reducer(state = defaultState, action) {
@@ -12,6 +14,12 @@ export default function reducer(state = defaultState, action) {
         proyecto: action.payload
       }
     }
+    case seleccionarPaciente: {
+      return {
+        ...state,
+        paciente: action.payload
+      }
+    }
     default: return state
   }
 }
@@ -19,4 +27,10 @@ export default function reducer(state = defaultState, action) {
 export const seleccionaProyecto = proyecto => ({
   type: seleccionarProyecto,
   payload: proyecto
+})
+
+
+export const seleccionaPaciente = paciente => ({
+  type: seleccionarPaciente,
+  payload: paciente
 })

@@ -7,6 +7,8 @@ const query = gql`
       nombres
       apellido_paterno
       apellido_materno
+      diagnostico
+      fecha_nacimiento
       foto {
         url
       }
